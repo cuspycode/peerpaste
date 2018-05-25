@@ -21,6 +21,10 @@ public class Server {
 	////ServerSocket server = new ServerSocket(0);
 	ServerSocket server = new ServerSocket(1234);
 	server.setSoTimeout(3000);
+
+	// Publish the service on mDNS
+	Publish.start("Your friendly Java server", server.getLocalPort());
+
 	for (;;) {
 	    try {
 		Socket socket = server.accept();
@@ -33,6 +37,8 @@ public class Server {
 		// ignore
 	    }
 	}
+
+	//Publish.stop();
     }
 
     private static void handleCommand(Socket socket, String peerCommand, String data) {
