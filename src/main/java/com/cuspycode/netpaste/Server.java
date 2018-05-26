@@ -7,6 +7,12 @@ import java.net.Socket;
 import java.net.ServerSocket;
 import java.net.SocketTimeoutException;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.DataFlavor;
+
 public class Server {
 
     final static String SEND_COMMAND = "SEND";
@@ -70,7 +76,26 @@ public class Server {
 		String result = sb.toString();
 
 		System.out.println("result string: '" +result+ "'");
+
+		// Preliminary AWT paste (i.e. CTRL-V, but not xsel)
+		StringSelection selection = new StringSelection(result);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(selection, selection);
+
 	    } else if (peerCommand.equals(RECEIVE_COMMAND)) {
+
+		// Preliminary AWT copy (text-only for now)
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		Transferable clip = clipboard.getContents(null);
+		if (clip != null) {
+		    if (clip.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+			try {
+			    data = (String) clip.getTransferData(DataFlavor.stringFlavor);
+			} catch (Exception e) {
+			    e.printStackTrace();
+			}
+		    }
+		}
 		byte[] dataBytes = data.getBytes();
 		String command = sendCmdPrefix + dataBytes.length + "\n";
 		out.write(command.getBytes());
