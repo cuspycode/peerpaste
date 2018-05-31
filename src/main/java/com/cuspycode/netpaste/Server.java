@@ -15,6 +15,8 @@ import java.awt.datatransfer.DataFlavor;
 
 public class Server {
 
+    final static String ME_COMMAND = "ME";
+    final static String OOB_COMMAND = "OOB";
     final static String SEND_COMMAND = "SEND";
     final static String RECEIVE_COMMAND = "RECEIVE";
 
@@ -37,7 +39,6 @@ public class Server {
 		OutputStream out = socket.getOutputStream();
 		out.write("JavaSE-NetPaste v0.1\n".getBytes());
 		String peerCommand = readPeerCommand(socket.getInputStream());
-		System.out.println("peerCommand: '" +peerCommand+ "'");
 		handleCommand(socket, peerCommand, myData);
 	    } catch (SocketTimeoutException e) {
 		// ignore
@@ -48,11 +49,23 @@ public class Server {
     }
 
     private static void handleCommand(Socket socket, String peerCommand, String data) {
+ System.out.println("handling peerCommand: '" +peerCommand+ "'");
 	try {
 	    OutputStream out = socket.getOutputStream();
 	    InputStream in = socket.getInputStream();
+	    String meCmdPrefix = ME_COMMAND + " ";
+	    String oobCmdPrefix = OOB_COMMAND + " ";
 	    String sendCmdPrefix = SEND_COMMAND + " ";
-	    if (peerCommand.startsWith(sendCmdPrefix)) {
+	    if (peerCommand.startsWith(meCmdPrefix)) {
+		String remoteName = peerCommand.substring(meCmdPrefix.length());
+		handleCommand(socket, readPeerCommand(socket.getInputStream()), data);
+
+	    } else if (peerCommand.startsWith(oobCmdPrefix)) {
+		String remoteName = peerCommand.substring(oobCmdPrefix.length());
+ System.out.println("OOB: " +remoteName);
+		// Store remoteName and flag it as "unpaired"
+
+	    } else if (peerCommand.startsWith(sendCmdPrefix)) {
 		int declaredSize = Integer.parseInt(peerCommand.substring(sendCmdPrefix.length()));
 		StringBuilder sb = new StringBuilder();
 		byte buf[] = new byte[1024];
