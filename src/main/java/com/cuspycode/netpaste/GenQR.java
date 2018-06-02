@@ -11,17 +11,19 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 public class GenQR {
-    private static final String QR_CODE_IMAGE_PATH = "./MyQRCode.png";
 
-    private static void generateQRCodeImage(String text, int width, int height, String filePath)
+    public static void showQRCode(String text) {
+	try {
+	    generateQRCodeImage(text, 32, 32);
+	} catch (WriterException|IOException e) {
+	    throw new RuntimeException(e);
+	}
+    }
+
+    private static void generateQRCodeImage(String text, int width, int height)
             throws WriterException, IOException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
-
-	/*
-        Path path = FileSystems.getDefault().getPath(filePath);
-        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
-	*/
 
 	int prevState = -1;
 	for (int i=0; i<height; i++) {
@@ -42,8 +44,7 @@ public class GenQR {
 
     public static void main(String[] args) {
         try {
-            //generateQRCodeImage("This is my first QR Code", 350, 350, QR_CODE_IMAGE_PATH);
-            generateQRCodeImage(args[0], 32, 32, QR_CODE_IMAGE_PATH);
+            generateQRCodeImage(args[0], 32, 32);
         } catch (WriterException e) {
             System.out.println("Could not generate QR Code, WriterException :: " + e.getMessage());
         } catch (IOException e) {

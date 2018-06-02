@@ -20,6 +20,8 @@ public class Server {
     final static String SEND_COMMAND = "SEND";
     final static String RECEIVE_COMMAND = "RECEIVE";
 
+    private static String remoteName = null;				// Kludge
+
     public static void main(String[] args) throws Exception {
 	String myData = "The quick fox pasted a lazy dog";
 	if (args.length > 0) {
@@ -27,7 +29,7 @@ public class Server {
 	}
 	// Initialize a server socket on the next available port.
 	////ServerSocket server = new ServerSocket(0);
-	ServerSocket server = new ServerSocket(1234);
+	ServerSocket server = new ServerSocket(1235);
 	server.setSoTimeout(3000);
 
 	// Publish the service on mDNS
@@ -57,13 +59,16 @@ public class Server {
 	    String oobCmdPrefix = OOB_COMMAND + " ";
 	    String sendCmdPrefix = SEND_COMMAND + " ";
 	    if (peerCommand.startsWith(meCmdPrefix)) {
-		String remoteName = peerCommand.substring(meCmdPrefix.length());
+		remoteName = peerCommand.substring(meCmdPrefix.length());
 		handleCommand(socket, readPeerCommand(socket.getInputStream()), data);
 
 	    } else if (peerCommand.startsWith(oobCmdPrefix)) {
-		String remoteName = peerCommand.substring(oobCmdPrefix.length());
- System.out.println("OOB: " +remoteName);
-		// Store remoteName and flag it as "unpaired"
+		remoteName = peerCommand.substring(oobCmdPrefix.length());
+		String newSecret = Secrets.newSecret();
+		Secrets.putSecret(remoteName, newSecret);
+		System.out.println("\nPlease scan QR code for \"" +remoteName+ "\"\n");
+		GenQR.showQRCode(newSecret);
+
 
 	    } else if (peerCommand.startsWith(sendCmdPrefix)) {
 		int declaredSize = Integer.parseInt(peerCommand.substring(sendCmdPrefix.length()));
@@ -90,6 +95,10 @@ public class Server {
 
 		System.out.println("result string: '" +result+ "'");
 
+		result = Crypto.decrypt(result, Secrets.getSecret(remoteName));
+
+		System.out.println("result string: '" +result+ "'");
+
 		// Preliminary AWT paste (i.e. CTRL-V, but not xsel)
 		StringSelection selection = new StringSelection(result);
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -109,13 +118,16 @@ public class Server {
 			}
 		    }
 		}
+
+		data = Crypto.encrypt(data, Secrets.getSecret(remoteName));
+
 		byte[] dataBytes = data.getBytes();
 		String command = sendCmdPrefix + dataBytes.length + "\n";
 		out.write(command.getBytes());
 		out.write(dataBytes);
 	    }
 	    socket.close();
-	} catch (IOException e) {
+	} catch (Exception e) {
 	    System.out.println("error when handling '" +peerCommand+ "' : " +e);
 	}
     }
