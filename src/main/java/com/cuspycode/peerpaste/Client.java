@@ -1,4 +1,4 @@
-package com.cuspycode.netpaste;
+package com.cuspycode.peerpaste;
 
 import java.io.IOException;
 import java.io.InputStream;

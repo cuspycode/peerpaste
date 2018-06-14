@@ -1,4 +1,4 @@
-package com.cuspycode.netpaste;
+package com.cuspycode.peerpaste;
 
 import java.util.Arrays;
 import javax.crypto.Cipher;

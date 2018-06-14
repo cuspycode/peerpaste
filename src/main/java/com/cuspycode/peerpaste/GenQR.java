@@ -1,4 +1,4 @@
-package com.cuspycode.netpaste;
+package com.cuspycode.peerpaste;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;

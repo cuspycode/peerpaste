@@ -1,4 +1,4 @@
-package com.cuspycode.netpaste;
+package com.cuspycode.peerpaste;
 
 import java.util.Enumeration;
 import java.io.IOException;
