@@ -129,6 +129,7 @@ public class Server {
 	    socket.close();
 	} catch (Exception e) {
 	    System.out.println("error when handling '" +peerCommand+ "' : " +e);
+	    e.printStackTrace();
 	}
     }
 
