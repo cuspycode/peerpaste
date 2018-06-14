@@ -31,14 +31,14 @@ public class Publish {
     }
 
     public static void start(String name, int port) throws IOException {
-	String myAddr = System.getProperty("netpaste.server.ipaddr");
-	String myInterface = System.getProperty("netpaste.server.interface");
+	String myAddr = System.getProperty("peerpaste.server.ipaddr");
+	String myInterface = System.getProperty("peerpaste.server.interface");
 	if (myAddr == null) {
 	    myAddr = getInterfaceIP(null, false);
 	}
 	jmdns = JmDNS.create(InetAddress.getByName(myAddr));
 
-	ServiceInfo serviceInfo = ServiceInfo.create("_netpaste._tcp.", name, port, "");
+	ServiceInfo serviceInfo = ServiceInfo.create("_peerpaste._tcp.", name, port, "");
 	jmdns.registerService(serviceInfo);
     }
 
