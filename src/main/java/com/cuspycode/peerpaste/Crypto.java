@@ -11,14 +11,13 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 public class Crypto {
-    private SecureRandom rng;
-
-    public Crypto() {
-        this.rng = new SecureRandom();
-    }
+    private static SecureRandom rng = new SecureRandom();
 
     public static void main(String[] args) throws Exception {
-	System.out.println(Crypto.decrypt(args[1], args[0]));
+	String[] parts = args[1].split(":");
+	byte[] iv = Base64.getDecoder().decode(parts[0]);
+	byte[] data = Base64.getDecoder().decode(parts[1]);
+	System.out.println(new String(new Crypto().decrypt(data, args[0], iv), "UTF-8"));
     }
 
     private Cipher setup(int mode, byte[] iv, String password) throws Exception {
@@ -39,24 +38,25 @@ public class Crypto {
         return setup(Cipher.ENCRYPT_MODE, iv, password).doFinal(plaintext);
     }
 
-    public byte[] decrypt(byte[] cryptext, String password, byte[] iv) throws Exception {
-        return setup(Cipher.DECRYPT_MODE, iv, password).doFinal(cryptext);
-    }
-
-    public static String encrypt(String plaintext, String password) throws Exception {
-	Crypto c = new Crypto();
+    public static byte[] encrypt(byte[] plaintext, String password) throws Exception {
 	byte[] iv = new byte[12];
-	byte[] cryptext = c.encrypt(plaintext.getBytes("UTF-8"), password, iv);
-	return (Base64.getEncoder().encodeToString(iv) +
-		":" +
-		Base64.getEncoder().encodeToString(cryptext));
+	byte[] cryptext = new Crypto().encrypt(plaintext, password, iv);
+	byte[] result = Arrays.copyOf(iv, iv.length + cryptext.length);
+	for (int i=0; i<cryptext.length; i++) {
+	    result[iv.length + i] = cryptext[i];
+	}
+        return result;
     }
 
-    public static String decrypt(String cryptext, String password) throws Exception {
-	String[] parts = cryptext.split(":");
-	byte[] iv = Base64.getDecoder().decode(parts[0]);
-	byte[] data = Base64.getDecoder().decode(parts[1]);
-	return new String(new Crypto().decrypt(data, password, iv), "UTF-8");
+    public byte[] decrypt(byte[] cryptext, String password, byte[] iv) throws Exception {
+       return setup(Cipher.DECRYPT_MODE, iv, password).doFinal(cryptext);
     }
+
+    public static byte[] decrypt(byte[] cryptext, String password) throws Exception {
+	byte[] iv = Arrays.copyOf(cryptext, 12);
+	byte[] data = Arrays.copyOfRange(cryptext, 12, cryptext.length);
+	return new Crypto().decrypt(data, password, iv);
+    }
+
 }
 

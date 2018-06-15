@@ -6,12 +6,16 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.ServerSocket;
 import java.net.SocketTimeoutException;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.DataFlavor;
+
+import java.util.Base64;			// For debugging
 
 public class Server {
 
@@ -69,33 +73,12 @@ public class Server {
 		System.out.println("\nPlease scan QR code for \"" +remoteName+ "\"\n");
 		GenQR.showQRCode(newSecret);
 
-
 	    } else if (peerCommand.startsWith(sendCmdPrefix)) {
 		int declaredSize = Integer.parseInt(peerCommand.substring(sendCmdPrefix.length()));
-		StringBuilder sb = new StringBuilder();
-		byte buf[] = new byte[1024];
-		int nbytes;
-		int receivedSize = 0;
-		while (receivedSize < declaredSize) {
-		    nbytes = in.read(buf);
-		    if (nbytes == -1) {
-			break;
-		    }
-		    if (receivedSize + nbytes > declaredSize) {
-			nbytes = declaredSize - receivedSize;
-		    }
-		    sb.append(new String(buf, 0, nbytes));
-		    receivedSize += nbytes;
-		}
-		if (receivedSize != declaredSize) {
-		    System.out.println("error: received " +receivedSize+ " bytes, expected " +declaredSize);
-		    sb.delete(0, sb.length());
-		}
-		String result = sb.toString();
+		byte[] resultBytes = readBytes(in, declaredSize);
+		System.out.println("encrypted string: '" +Base64.getEncoder().encodeToString(resultBytes)+ "'");
 
-		System.out.println("result string: '" +result+ "'");
-
-		result = Crypto.decrypt(result, Secrets.getSecret(remoteName));
+		String result = new String(Crypto.decrypt(resultBytes, Secrets.getSecret(remoteName)));
 
 		System.out.println("result string: '" +result+ "'");
 
@@ -119,9 +102,7 @@ public class Server {
 		    }
 		}
 
-		data = Crypto.encrypt(data, Secrets.getSecret(remoteName));
-
-		byte[] dataBytes = data.getBytes();
+		byte[] dataBytes = Crypto.encrypt(data.getBytes(), Secrets.getSecret(remoteName));
 		String command = sendCmdPrefix + dataBytes.length + "\n";
 		out.write(command.getBytes());
 		out.write(dataBytes);
@@ -150,5 +131,41 @@ public class Server {
 	return peerCommand;
     }
 
+    public static void swallowStream(InputStream in) throws IOException {
+	byte buf[] = new byte[1024];
+	while (in.read(buf) != -1) {}
+    }
+
+    public static byte[] readBytes(InputStream in, int declaredSize) throws IOException {
+	ArrayList<byte[]> accum = new ArrayList<byte[]>();
+	byte buf[] = new byte[1024];
+	int nbytes;
+	int receivedSize = 0;
+	while (receivedSize < declaredSize) {
+	    nbytes = in.read(buf);
+	    if (nbytes == -1) {
+		break;
+	    }
+	    if (receivedSize + nbytes > declaredSize) {
+		nbytes = declaredSize - receivedSize;
+	    }
+	    accum.add(Arrays.copyOf(buf, nbytes));
+	    receivedSize += nbytes;
+	}
+	if (receivedSize != declaredSize) {
+	    System.out.println("error: received " +receivedSize+ " bytes, expected " +declaredSize);
+	    accum.clear();
+	    receivedSize = 0;
+	}
+	byte[] resultBytes = new byte[receivedSize];
+	int i=0;
+	for (byte[] chunk : accum) {
+	    // This can probably be optimized?
+	    for (int j=0; j<chunk.length; j++) {
+		resultBytes[i++] = chunk[j];
+	    }
+	}
+	return resultBytes;
+    }
 }
 

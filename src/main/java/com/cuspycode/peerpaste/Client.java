@@ -45,15 +45,17 @@ public class Client {
 	    }
 	    buf[i] = (byte) value;
 	}
-	handleCommand(command, myData, out, in);
+	handleCommand(command, myData, target, out, in);
+	socket.close();
     }
 
-    private static void handleCommand(String command, String myData, OutputStream out, InputStream in) throws IOException {
+    private static void handleCommand(String command, String myData, String remoteName, OutputStream out, InputStream in) throws Exception {
 	if (SEND_COMMAND.equals(command)) {
-	    byte[] myBytes = myData.getBytes();
+	    byte[] myBytes = Crypto.encrypt(myData.getBytes(), Secrets.getSecret(remoteName));
 	    String line = command+ " " +myBytes.length+ "\n";
 	    out.write(line.getBytes());
 	    out.write(myBytes);
+	    Server.swallowStream(in);
 	} else if (RECEIVE_COMMAND.equals(command)){
 	    String line = command+ "\n";
 	    out.write(line.getBytes());
@@ -61,26 +63,9 @@ public class Client {
 	    String sendCmdPrefix = SEND_COMMAND+ " ";
 	    if (peerCommand.startsWith(sendCmdPrefix)) {
 		int declaredSize = Integer.parseInt(peerCommand.substring(sendCmdPrefix.length()));
-		StringBuilder sb = new StringBuilder();
-		byte buf[] = new byte[1024];
-		int nbytes;
-		int receivedSize = 0;
-		while (receivedSize < declaredSize) {
-		    nbytes = in.read(buf);
-		    if (nbytes == -1) {
-			break;
-		    }
-		    if (receivedSize + nbytes > declaredSize) {
-			nbytes = declaredSize - receivedSize;
-		    }
-		    sb.append(new String(buf, 0, nbytes));
-		    receivedSize += nbytes;
-		}
-		if (receivedSize != declaredSize) {
-		    System.out.println("error: received " +receivedSize+ " bytes, expected " +declaredSize);
-		    sb.delete(0, sb.length());
-		}
-		String result = sb.toString();
+
+		byte[] resultBytes = Server.readBytes(in, declaredSize);
+		String result = new String(Crypto.decrypt(resultBytes, Secrets.getSecret(remoteName)));
 
 		System.out.println("result string: '" +result+ "'");
 	    }
