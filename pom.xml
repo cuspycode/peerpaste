@@ -65,6 +65,13 @@
 	    <version>3.3.2</version>
 	</dependency>
 
+	<!-- https://mvnrepository.com/artifact/org.json -->
+	<dependency>
+	    <groupId>org.json</groupId>
+	    <artifactId>json</artifactId>
+	    <version>20090211</version>
+	</dependency>
+
 	<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
 	<dependency>
 	    <groupId>com.h2database</groupId>
