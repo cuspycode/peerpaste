@@ -49,7 +49,7 @@ public class Crypto {
     }
 
     public byte[] decrypt(byte[] cryptext, String password, byte[] iv) throws Exception {
-       return setup(Cipher.DECRYPT_MODE, iv, password).doFinal(cryptext);
+        return setup(Cipher.DECRYPT_MODE, iv, password).doFinal(cryptext);
     }
 
     public static byte[] decrypt(byte[] cryptext, String password) throws Exception {
@@ -57,6 +57,5 @@ public class Crypto {
 	byte[] data = Arrays.copyOfRange(cryptext, 12, cryptext.length);
 	return new Crypto().decrypt(data, password, iv);
     }
-
 }
 
