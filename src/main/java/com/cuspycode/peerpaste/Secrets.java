@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.security.SecureRandom;
 import java.util.Base64;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
@@ -24,11 +25,10 @@ public class Secrets {
 	    this.version = version;
 	}
 
-	public static Entry fromJSON(String json) {
+	public static Entry fromJSON(JSONObject json) {
 	    Entry entry = null;
 	    try {
-		JSONObject obj = new JSONObject(json);
-		entry = new Entry(obj.getString("secret"), obj.getLong("created"), obj.getInt("version"));
+		entry = new Entry(json.getString("secret"), json.getLong("created"), json.getInt("version"));
 	    } catch (JSONException e) {
 		entry = null;
 	    }
@@ -76,6 +76,18 @@ public class Secrets {
 
     public static Map<String,Entry> getAllSecrets() {
 	return ephemeralMap;
+    }
+
+    public static void importFromJSON(JSONArray json) throws JSONException {
+	Map<String,Entry> map = new LinkedHashMap<String,Entry>();
+	for (int i=0; i<json.length(); i++) {
+	    JSONObject obj = json.getJSONObject(i);
+	    String key = obj.optString("peer", null);
+	    if (key != null) {
+		map.put(key, Entry.fromJSON(json.getJSONObject(i)));
+	    }
+	}
+	ephemeralMap = map;
     }
 }
 
