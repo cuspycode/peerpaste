@@ -19,17 +19,23 @@ public class Persistence {
 	return settingsDir + "/.peerpaste-settings";
     }
 
+    private static long latestLoadTime = 0;
+
+    public static long getLatestLoadTime() {
+	return latestLoadTime;
+    }
+
     public static JSONArray load() {
 	Path path = Paths.get(settingsPath());
 	if (Files.isReadable(path)) {
 	    try {
 		String content = new String(Files.readAllBytes(path), "UTF-8");
+		latestLoadTime = System.currentTimeMillis();
 		return new JSONArray(content);
 	    } catch (IOException|JSONException e) {
 		// ignore, let the settings be empty
 		e.printStackTrace();
 	    }
-	} else {
 	}
 	return null;
     }

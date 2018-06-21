@@ -78,14 +78,18 @@ public class Server {
 		byte[] resultBytes = readBytes(in, declaredSize);
 		System.out.println("encrypted string: '" +Base64.getEncoder().encodeToString(resultBytes)+ "'");
 
-		String result = new String(Crypto.decrypt(resultBytes, Secrets.getSecret(remoteName)));
+		String sharedSecret = Secrets.getSecret(remoteName);
+		if (sharedSecret != null) {
+		    String result = new String(Crypto.decrypt(resultBytes, sharedSecret));
+		    System.out.println("result string: '" +result+ "'");
 
-		System.out.println("result string: '" +result+ "'");
-
-		// Preliminary AWT paste (i.e. CTRL-V, but not xsel)
-		StringSelection selection = new StringSelection(result);
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents(selection, selection);
+		    // Preliminary AWT paste (i.e. CTRL-V, but not xsel)
+		    StringSelection selection = new StringSelection(result);
+		    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		    clipboard.setContents(selection, selection);
+		} else {
+		    System.out.println("\nMissing decryption secret, please delete peer key and try again\n");
+		}
 
 	    } else if (peerCommand.equals(RECEIVE_COMMAND)) {
 
