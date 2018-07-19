@@ -99,7 +99,7 @@ public class Server {
 		    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		    clipboard.setContents(selection, selection);
 		} else {
-		    System.out.println("\nMissing decryption secret, please delete peer key and try again\n");
+		    System.out.println("\nMissing decryption secret. Please delete the key from the peer device and try again\n");
 		}
 
 	    } else if (peerCommand.equals(RECEIVE_COMMAND)) {
