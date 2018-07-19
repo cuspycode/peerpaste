@@ -55,6 +55,8 @@ public class GUI {
 	    }
 	}
 	JFrame frame = new JFrame();
+	frame.setTitle("PeerPaste encryption key");
+	frame.setLocationRelativeTo(null);
 	Icon icon = new ImageIcon(image);
         JLabel label = new JLabel(icon);
 	frame.getContentPane().setLayout(new FlowLayout());
