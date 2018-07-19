@@ -36,6 +36,17 @@ public class Server {
 	ServerSocket server = new ServerSocket(1235);
 	server.setSoTimeout(3000);
 
+	Runtime.getRuntime().addShutdownHook(new Thread() {
+		public void run() {
+		    System.out.println("Shutting down...");
+		    try {
+			Publish.stop();
+		    } catch (IOException e) {
+			e.printStackTrace();
+		    }
+		}
+	    });
+
 	// Publish the service on mDNS
 	Publish.start("Your friendly Java server", server.getLocalPort());
 
@@ -43,7 +54,7 @@ public class Server {
 	    try {
 		Socket socket = server.accept();
 		OutputStream out = socket.getOutputStream();
-		out.write("JavaSE-NetPaste v0.1\n".getBytes());
+		out.write("JavaSE-PeerPaste v0.1\n".getBytes());
 		String peerCommand = readPeerCommand(socket.getInputStream());
 		handleCommand(socket, peerCommand, myData);
 	    } catch (SocketTimeoutException e) {

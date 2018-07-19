@@ -30,6 +30,10 @@ public class Client {
 	Socket socket = new Socket(target, 1234);	// Replace with mDNS-resolved info...
 	OutputStream out = socket.getOutputStream();
 	String line = ME_COMMAND+ " Your friendly Java server\n";
+	if (command.startsWith("+")) {
+	    command = command.substring(1);
+	    line = OOB_COMMAND+ line.substring(ME_COMMAND.length());
+	}
 	out.write(line.getBytes());
 	InputStream in = socket.getInputStream();
 	byte buf[] = new byte[1024];
