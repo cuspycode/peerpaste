@@ -25,20 +25,24 @@ public class GenQR {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
 
-	int prevState = -1;
-	for (int i=0; i<height; i++) {
-	    StringBuilder line = new StringBuilder();
-	    for (int j=0; j<width; j++) {
-		int newState = (bitMatrix.get(i,j)? 1 : 0);
-		if (newState != prevState) {
-		    line.append("\u001b[" +(newState==1? "40" : "47")+ "m");
-		    prevState = newState;
+	if (GUI.rootFrame != null) {
+	    GUI.showQRCodeImage(bitMatrix, width, height);
+	} else {
+	    int prevState = -1;
+	    for (int i=0; i<height; i++) {
+		StringBuilder line = new StringBuilder();
+		for (int j=0; j<width; j++) {
+		    int newState = (bitMatrix.get(j,i)? 1 : 0);
+		    if (newState != prevState) {
+			line.append("\u001b[" +(newState==1? "40" : "47")+ "m");
+			prevState = newState;
+		    }
+		    line.append("  ");
 		}
-		line.append("  ");
+		line.append("\u001b[0m");
+		System.out.println(line.toString());
+		prevState = -1;
 	    }
-	    line.append("\u001b[0m");
-	    System.out.println(line.toString());
-	    prevState = -1;
 	}
     }
 
