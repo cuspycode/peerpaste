@@ -38,7 +38,7 @@ public class Server {
 
 	Runtime.getRuntime().addShutdownHook(new Thread() {
 		public void run() {
-		    System.out.println("Shutting down...");
+		    System.out.println("\nShutting down...");
 		    try {
 			Publish.stop();
 		    } catch (IOException e) {

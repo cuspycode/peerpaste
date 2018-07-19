@@ -25,6 +25,18 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+	    <!-- Configure Main-Class for Jar plugin -->
+	    <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-jar-plugin</artifactId>
+		<configuration>
+		    <archive>
+			<manifest>
+			    <mainClass>com.cuspycode.peerpaste.Server</mainClass>
+			</manifest>
+		    </archive>
+		</configuration>
+	    </plugin>
             <!-- Shade plugin and config -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
