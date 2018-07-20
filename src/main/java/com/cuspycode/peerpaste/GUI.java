@@ -24,7 +24,7 @@ public class GUI {
 	    rootFrame = new RootFrame();
 	    rootFrame.setVisible(true);
 	}
-	GenQR.showQRCode("Allan tar kakan");
+	startServer();
     }
 
     public static class RootFrame extends JFrame {
@@ -38,6 +38,22 @@ public class GUI {
 	    setLocationRelativeTo(null);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
+    }
+
+    private static void startServer() throws Exception {
+	Server.main(new String[] {});
+    }
+
+    public static void println(String message) {
+	if (rootFrame != null) {
+
+	} else {
+	    System.out.println(message);
+	}
+    }
+
+    public static void printlnDebug(String message) {
+	System.err.println(message);
     }
 
     public static void showQRCodeImage(BitMatrix bitMatrix, int width, int height) {
@@ -56,7 +72,7 @@ public class GUI {
 	}
 	JFrame frame = new JFrame();
 	frame.setTitle("PeerPaste encryption key");
-	frame.setLocationRelativeTo(null);
+	frame.setLocationRelativeTo(rootFrame);
 	Icon icon = new ImageIcon(image);
         JLabel label = new JLabel(icon);
 	frame.getContentPane().setLayout(new FlowLayout());
@@ -65,6 +81,4 @@ public class GUI {
 	frame.setVisible(true);
     }
 }
-
-
 
