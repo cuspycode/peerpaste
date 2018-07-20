@@ -8,35 +8,53 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.FlowLayout;
 import javax.swing.JFrame;
+import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public class GUI {
+    private static final int TEXT_ROWS = 5;
+    private static final int TEXT_COLUMNS = 50;
+
     public static RootFrame rootFrame = null;
+
+    private static String dummyText = "Foo\n";
 
     public static void main(String[] args) throws Exception {
 	if (GraphicsEnvironment.isHeadless()) {
-	    System.out.println("Headless");
+	    System.out.println("Running headless");
 	} else {
-	    System.out.println("Graphic");
+	    final String AA_PROP_KEY = "awt.useSystemAAFontSettings";
+	    if (System.getProperty(AA_PROP_KEY) == null) {
+		if ("Linux".equals(System.getProperty("os.name"))) {
+		    System.setProperty(AA_PROP_KEY, "on");
+		}
+	    }
+	    dummyText = args[0];
 	    rootFrame = new RootFrame();
 	    rootFrame.setVisible(true);
 	}
+	println("Starting server");
 	startServer();
     }
 
     public static class RootFrame extends JFrame {
+	public JTextArea text;
+
 	public RootFrame() {
 	    init();
 	}
 
 	private void init() {
 	    setTitle("PeerPaste");
-	    setSize(300, 200);
 	    setLocationRelativeTo(null);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
+	    text = new JTextArea(dummyText + "\n", TEXT_ROWS, TEXT_COLUMNS);
+	    text.setEditable(false);
+	    getContentPane().add(text);
+	    pack();
 	}
     }
 
@@ -46,7 +64,21 @@ public class GUI {
 
     public static void println(String message) {
 	if (rootFrame != null) {
-
+	    SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+			JTextArea textArea = rootFrame.text;
+			String x = textArea.getText();
+			x += message;
+			String[] lines = x.split("\n");
+			StringBuffer buf = new StringBuffer();
+			for (int i=lines.length-TEXT_ROWS; i<lines.length; i++) {
+			    if (i >= 0) {
+				buf.append(lines[i] + "\n");
+			    }
+			}
+			textArea.setText(buf.toString());
+		    }
+		});
 	} else {
 	    System.out.println(message);
 	}
