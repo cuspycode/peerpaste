@@ -44,7 +44,7 @@ public class Client {
 	    }
 	    if (value == '\n') {
 		String greeting = new String(buf, 0, i);
-		System.out.println(greeting);
+		GUI.println(greeting);
 		break;
 	    }
 	    buf[i] = (byte) value;
@@ -71,7 +71,7 @@ public class Client {
 		byte[] resultBytes = Server.readBytes(in, declaredSize);
 		String result = new String(Crypto.decrypt(resultBytes, Secrets.getSecret(remoteName)));
 
-		System.out.println("result string: '" +result+ "'");
+		GUI.println("result string: '" +result+ "'");
 	    }
 	}
     }

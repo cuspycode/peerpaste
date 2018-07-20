@@ -38,7 +38,7 @@ public class Server {
 
 	Runtime.getRuntime().addShutdownHook(new Thread() {
 		public void run() {
-		    System.out.println("\nShutting down...");
+		    GUI.println("\nShutting down...");
 		    try {
 			Publish.stop();
 		    } catch (IOException e) {
@@ -81,25 +81,25 @@ public class Server {
 		remoteName = peerCommand.substring(oobCmdPrefix.length());
 		String newSecret = Secrets.newSecret();
 		Secrets.putSecret(remoteName, newSecret);
-		System.out.println("\nPlease scan QR code for \"" +remoteName+ "\"\n");
+		GUI.println("\nPlease scan QR code for \"" +remoteName+ "\"\n");
 		GenQR.showQRCode(newSecret);
 
 	    } else if (peerCommand.startsWith(sendCmdPrefix)) {
 		int declaredSize = Integer.parseInt(peerCommand.substring(sendCmdPrefix.length()));
 		byte[] resultBytes = readBytes(in, declaredSize);
-		System.out.println("encrypted string: '" +Base64.getEncoder().encodeToString(resultBytes)+ "'");
+		GUI.println("encrypted string: '" +Base64.getEncoder().encodeToString(resultBytes)+ "'");
 
 		String sharedSecret = Secrets.getSecret(remoteName);
 		if (sharedSecret != null) {
 		    String result = new String(Crypto.decrypt(resultBytes, sharedSecret));
-		    System.out.println("result string: '" +result+ "'");
+		    GUI.println("result string: '" +result+ "'");
 
 		    // Preliminary AWT paste (i.e. CTRL-V, but not xsel)
 		    StringSelection selection = new StringSelection(result);
 		    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		    clipboard.setContents(selection, selection);
 		} else {
-		    System.out.println("\nMissing decryption secret. Please delete the key from the peer device and try again\n");
+		    GUI.println("\nMissing decryption secret. Please delete the key from the peer device and try again\n");
 		}
 
 	    } else if (peerCommand.equals(RECEIVE_COMMAND)) {
