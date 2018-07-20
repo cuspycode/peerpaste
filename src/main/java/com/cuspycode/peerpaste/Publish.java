@@ -58,7 +58,7 @@ public class Publish {
                         if (!i.isLoopback() && ipv6 == (a instanceof Inet6Address)) {
                             if (!a.isLinkLocalAddress()) {
                                 String ip = a.getHostAddress();
-				GUI.println("Own IP is " +ip+ " on interface " +i.getName());
+				GUI.println("Own IP is " +ip+ " on interface \"" +i.getName()+ "\"");
                                 return ip;
                             }
                         }

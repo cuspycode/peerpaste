@@ -8,13 +8,6 @@ import java.net.ServerSocket;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
 import java.util.ArrayList;
-
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.DataFlavor;
-
 import java.util.Base64;			// For debugging
 
 public class Server {
@@ -66,7 +59,7 @@ public class Server {
     }
 
     private static void handleCommand(Socket socket, String peerCommand, String data) {
- System.out.println("handling peerCommand: '" +peerCommand+ "'");
+	GUI.printlnDebug("handling peerCommand: '" +peerCommand+ "'");
 	try {
 	    OutputStream out = socket.getOutputStream();
 	    InputStream in = socket.getInputStream();
@@ -87,36 +80,19 @@ public class Server {
 	    } else if (peerCommand.startsWith(sendCmdPrefix)) {
 		int declaredSize = Integer.parseInt(peerCommand.substring(sendCmdPrefix.length()));
 		byte[] resultBytes = readBytes(in, declaredSize);
-		GUI.println("encrypted string: '" +Base64.getEncoder().encodeToString(resultBytes)+ "'");
+		GUI.printlnDebug("encrypted string: '" +Base64.getEncoder().encodeToString(resultBytes)+ "'");
 
 		String sharedSecret = Secrets.getSecret(remoteName);
 		if (sharedSecret != null) {
 		    String result = new String(Crypto.decrypt(resultBytes, sharedSecret));
 		    GUI.println("result string: '" +result+ "'");
-
-		    // Preliminary AWT paste (i.e. CTRL-V, but not xsel)
-		    StringSelection selection = new StringSelection(result);
-		    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		    clipboard.setContents(selection, selection);
+		    GUI.paste(result);
 		} else {
 		    GUI.println("\nMissing decryption secret. Please delete the key from the peer device and try again\n");
 		}
 
 	    } else if (peerCommand.equals(RECEIVE_COMMAND)) {
-
-		// Preliminary AWT copy (text-only for now)
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		Transferable clip = clipboard.getContents(null);
-		if (clip != null) {
-		    if (clip.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-			try {
-			    data = (String) clip.getTransferData(DataFlavor.stringFlavor);
-			} catch (Exception e) {
-			    e.printStackTrace();
-			}
-		    }
-		}
-
+		data = GUI.copy();
 		byte[] dataBytes = Crypto.encrypt(data.getBytes(), Secrets.getSecret(remoteName));
 		String command = sendCmdPrefix + dataBytes.length + "\n";
 		out.write(command.getBytes());

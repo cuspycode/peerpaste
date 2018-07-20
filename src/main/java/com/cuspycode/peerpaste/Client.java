@@ -6,12 +6,6 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.DataFlavor;
-
 public class Client {
 
     final static String ME_COMMAND = "ME";

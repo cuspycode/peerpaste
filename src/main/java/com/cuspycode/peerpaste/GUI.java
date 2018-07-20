@@ -7,6 +7,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.DataFlavor;
+
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
@@ -15,24 +21,21 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public class GUI {
+    private static final String AA_PROP_KEY = "awt.useSystemAAFontSettings";
     private static final int TEXT_ROWS = 5;
     private static final int TEXT_COLUMNS = 50;
 
     public static RootFrame rootFrame = null;
 
-    private static String dummyText = "Foo\n";
-
     public static void main(String[] args) throws Exception {
 	if (GraphicsEnvironment.isHeadless()) {
 	    System.out.println("Running headless");
 	} else {
-	    final String AA_PROP_KEY = "awt.useSystemAAFontSettings";
 	    if (System.getProperty(AA_PROP_KEY) == null) {
 		if ("Linux".equals(System.getProperty("os.name"))) {
 		    System.setProperty(AA_PROP_KEY, "on");
 		}
 	    }
-	    dummyText = args[0];
 	    rootFrame = new RootFrame();
 	    rootFrame.setVisible(true);
 	}
@@ -51,7 +54,7 @@ public class GUI {
 	    setTitle("PeerPaste");
 	    setLocationRelativeTo(null);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
-	    text = new JTextArea(dummyText + "\n", TEXT_ROWS, TEXT_COLUMNS);
+	    text = new JTextArea(TEXT_ROWS, TEXT_COLUMNS);
 	    text.setEditable(false);
 	    getContentPane().add(text);
 	    pack();
@@ -86,6 +89,52 @@ public class GUI {
 
     public static void printlnDebug(String message) {
 	System.err.println(message);
+    }
+
+    private static void parseOptions(String[] args) {
+	int i = 0;
+	while (i < args.length) {
+	    String opt = args[i++];
+	    switch (opt) {
+	    case "--aa":
+		System.setProperty(AA_PROP_KEY, args[i++]);
+		break;
+	    case "--paste":
+	    }
+	}
+    }
+
+    public static void paste(String data) {
+	if (rootFrame != null) {
+	    // Preliminary AWT paste (i.e. CTRL-V, but not xsel)
+	    StringSelection selection = new StringSelection(data);
+	    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+	    clipboard.setContents(selection, selection);
+	} else {
+	    printlnDebug("Faking paste of '" +data+ "'");
+	}
+    }
+
+    public static String copy() {
+	String data = null;
+
+	if (rootFrame != null) {
+	    // Preliminary AWT copy (text-only for now)
+	    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+	    Transferable clip = clipboard.getContents(null);
+	    if (clip != null) {
+		if (clip.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+		    try {
+			data = (String) clip.getTransferData(DataFlavor.stringFlavor);
+		    } catch (Exception e) {
+			e.printStackTrace();
+		    }
+		}
+	    }
+	} else {
+	    data = "Faked cliboard copy data";
+	}
+	return data;
     }
 
     public static void showQRCodeImage(BitMatrix bitMatrix, int width, int height) {
