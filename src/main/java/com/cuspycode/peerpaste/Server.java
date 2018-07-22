@@ -30,17 +30,23 @@ public class Server {
 
 	Runtime.getRuntime().addShutdownHook(new Thread() {
 		public void run() {
-		    GUI.println("\nShutting down...");
-		    try {
-			Publish.stop();
-		    } catch (IOException e) {
-			e.printStackTrace();
+		    if (Publish.ifAddr != null) {
+			GUI.println("\nShutting down...");
+			try {
+			    Publish.stop();
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}
 		    }
 		}
 	    });
 
 	// Publish the service on mDNS
 	Publish.start();
+
+	if (Publish.ifAddr == null) {
+	    System.exit(1);
+	}
 
 	for (;;) {
 	    try {

@@ -26,8 +26,10 @@ public class GUI {
     private static final int TEXT_COLUMNS = 50;
 
     public static RootFrame rootFrame = null;
+    public static String headlessClipboard = "foobar";
 
     public static void main(String[] args) throws Exception {
+	parseOptions(args);
 	if (GraphicsEnvironment.isHeadless()) {
 	    System.out.println("Running headless");
 	} else {
@@ -100,6 +102,22 @@ public class GUI {
 		System.setProperty(AA_PROP_KEY, args[i++]);
 		break;
 	    case "--paste":
+		headlessClipboard = args[i++];
+		break;
+	    case "--name":
+		Publish.serviceName = args[i++];
+		break;
+	    case "--port":
+		Publish.servicePort = Integer.parseInt(args[i++]);
+		break;
+	    case "--address":
+		Publish.ifAddr = args[i++];
+		break;
+	    case "--interface":
+		Publish.ifName = args[i++];
+		break;
+	    default:
+		System.err.println("Unrecognized option: " +opt);
 	    }
 	}
     }

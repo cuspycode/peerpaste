@@ -40,10 +40,12 @@ public class Publish {
 	if (ifAddr == null) {
 	    ifAddr = getInterfaceIP(ifName, false);
 	}
-	GUI.println("Service name: " +serviceName);
-	jmdns = JmDNS.create(InetAddress.getByName(ifAddr));
-	ServiceInfo serviceInfo = ServiceInfo.create("_peerpaste._tcp.", serviceName, servicePort, "");
-	jmdns.registerService(serviceInfo);
+	if (ifAddr != null) {
+	    GUI.println("Service name: " +serviceName);
+	    jmdns = JmDNS.create(InetAddress.getByName(ifAddr));
+	    ServiceInfo serviceInfo = ServiceInfo.create("_peerpaste._tcp.", serviceName, servicePort, "");
+	    jmdns.registerService(serviceInfo);
+	}
     }
 
     public static void stop() throws IOException {
@@ -63,10 +65,12 @@ public class Publish {
                             if (!a.isLinkLocalAddress()) {
                                 String ip = a.getHostAddress();
 				GUI.println("Own IP is " +ip+ " on interface \"" +i.getName()+ "\"");
-				try {
-				    serviceName = InetAddress.getLocalHost().getHostName();
-				} catch (UnknownHostException ue) {
-				    serviceName = a.getHostName();
+				if (serviceName == null) {
+				    try {
+					serviceName = InetAddress.getLocalHost().getHostName();
+				    } catch (UnknownHostException ue) {
+					serviceName = a.getHostName();
+				    }
 				}
                                 return ip;
                             }
@@ -74,6 +78,7 @@ public class Publish {
                     }
                 }
             }
+	    throw new SocketException("No such interface: " +ifname);
         } catch (SocketException se) {
 	    System.out.println("Couldn't find interface " +ifname);
         }
