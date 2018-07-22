@@ -45,7 +45,7 @@ The Android app costs money on the Play Store simply because it costs me money t
 
 #### [Android] Why is the Android app closed source?
 
-Because I'm lazy. I don't foresee any pull requests in the near future, so why should I bother? That may change in the future however, but don't hold your breath while waiting.
+Because I'm lazy. I can't really imagine any pull requests, so why should I bother? That may change in the future however, but don't hold your breath while waiting.
 
 #### [General] How do I change the service name advertised by mDNS?
 
