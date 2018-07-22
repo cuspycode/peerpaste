@@ -45,7 +45,7 @@ The Android app costs money on the Play Store simply because it costs me money t
 
 #### [Android] Why is the Android app closed source?
 
-Because at the moment I don't see any net benefits coming from making it open source. (omforumlera)
+Because I'm lazy. I don't foresee any pull requests in the near future, so why should I bother? That may change in the future however, but don't hold your breath while waiting.
 
 #### [General] How do I change the service name advertised by mDNS?
 
