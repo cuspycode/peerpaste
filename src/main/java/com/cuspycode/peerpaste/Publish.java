@@ -6,11 +6,17 @@ import java.net.InetAddress;
 import java.net.Inet6Address;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 
 public class Publish {
+
+    public static String ifName = null;
+    public static String ifAddr = null;
+    public static String serviceName = null;
+    public static int servicePort = 0;
 
     private static JmDNS jmdns = null;
 
@@ -18,7 +24,7 @@ public class Publish {
 
         try {
 
-	    start("example", 1234);
+	    start();
 
             // Wait a bit
             Thread.sleep(25000);
@@ -30,15 +36,13 @@ public class Publish {
         }
     }
 
-    public static void start(String name, int port) throws IOException {
-	String myAddr = System.getProperty("peerpaste.server.ipaddr");
-	String myInterface = System.getProperty("peerpaste.server.interface");
-	if (myAddr == null) {
-	    myAddr = getInterfaceIP(null, false);
+    public static void start() throws IOException {
+	if (ifAddr == null) {
+	    ifAddr = getInterfaceIP(ifName, false);
 	}
-	jmdns = JmDNS.create(InetAddress.getByName(myAddr));
-
-	ServiceInfo serviceInfo = ServiceInfo.create("_peerpaste._tcp.", name, port, "");
+	GUI.println("Service name: " +serviceName);
+	jmdns = JmDNS.create(InetAddress.getByName(ifAddr));
+	ServiceInfo serviceInfo = ServiceInfo.create("_peerpaste._tcp.", serviceName, servicePort, "");
 	jmdns.registerService(serviceInfo);
     }
 
@@ -59,6 +63,11 @@ public class Publish {
                             if (!a.isLinkLocalAddress()) {
                                 String ip = a.getHostAddress();
 				GUI.println("Own IP is " +ip+ " on interface \"" +i.getName()+ "\"");
+				try {
+				    serviceName = InetAddress.getLocalHost().getHostName();
+				} catch (UnknownHostException ue) {
+				    serviceName = a.getHostName();
+				}
                                 return ip;
                             }
                         }

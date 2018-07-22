@@ -24,9 +24,8 @@ public class Server {
 	if (args.length > 0) {
 	    myData = args[0];
 	}
-	// Initialize a server socket on the next available port.
-	////ServerSocket server = new ServerSocket(0);
-	ServerSocket server = new ServerSocket(1235);
+	ServerSocket server = new ServerSocket(Publish.servicePort);
+	Publish.servicePort = server.getLocalPort();			// Put back real port number
 	server.setSoTimeout(3000);
 
 	Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -41,7 +40,7 @@ public class Server {
 	    });
 
 	// Publish the service on mDNS
-	Publish.start("Your friendly Java server", server.getLocalPort());
+	Publish.start();
 
 	for (;;) {
 	    try {
