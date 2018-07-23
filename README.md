@@ -12,7 +12,7 @@ Features:
 
 ## How to install
 
-First you need to have Java 8 installed on your machine. Then download `peerpaste.jar` and optionally download the shell script `peerpaste-server`. The jar will work on any machine that supports Java 8. The shell script will work on any machine that supports POSIX shell.
+First you need to have Java 8 installed on your machine. Then download `peerpaste.jar` and optionally download the shell script `peerpaste-server`. The jar will work on any machine that supports Java 8 or later. The shell script will work on any machine that supports a POSIX shell.
 
 ## How to run
 
@@ -29,11 +29,11 @@ This is most likely caused by network connectivity issues:
 * Make sure your devices don't block mDNS or mDNS-advertised traffic.
 * If the peer devices are connected to different LANs, they will be on different broadcast domains, and mDNS will not work by default. This can be solved by setting up proper IP multicast that works across both LANs, or by ensuring that both devices are connected to the same LAN.
 
-In some exceptional network configurations the desktop server picks the wrong IP address to advertise on mDNS, so that other devices won't be able to connect even though they are connected to the same LAN. This can be remedied by following the instructions in the FAQ answer *How do I bind the listening port to a different IP address?*
+Another possibility is that you have an exceptional network configuration that causes the desktop server to pick the wrong IP address to advertise on mDNS, which makes it unavailable to other devices even though they are connected to the same LAN. This can be remedied by following the instructions in the FAQ answer *How do I bind the listening port to a different IP address?*
 
 #### [General] Why should I trust your app to handle my secret data?
 
-One major use case for PeerPaste is to paste passwords or password-reset links or signup confirmation links etc, from one device to another. This of course requires trusting that the app is secure. The encryption and decryption code used in the desktop edition is published here on GitHub. It uses standard industry practices, and it's open for anyone to audit. The exact same code is used in the Android version, with the exception of a couple of trivial differences in how the `Base64` library is called in Java2SE, as compared to Android.
+One major use case for PeerPaste is to paste passwords or password-reset links or signup confirmation links etc, from one device to another. This of course requires trusting that the app is secure. The encryption and decryption code used in the desktop edition is published here on GitHub. It uses standard industry practices, and it's open for anyone to audit. The exact same code is used in the Android version, with the exception of a couple of trivial differences in how the `Base64` library is called in the different Java versions.
 
 #### [Android] Why do I get a Cryptographic failure error?
 
@@ -41,15 +41,15 @@ Either your Android version is too old to support the required crypto algorithm 
 
 #### [Android] Why does the Android app cost money?
 
-The Android app costs money on the Play Store simply because it costs me money to publish the app there. My original motivation to develop this app was that it was something I needed for myself. Then I thought why not share it with the world? OK, there are two ways to do that: 1) submit it to the Play Store, and 2) make it available on a website for sideloading. I might consider 2) in the future, but right now 1) is my choice and that means I need to pay the publishing costs.
+Because it cost me money to publish the app on the Play Store.
 
 #### [Android] Why is the Android app closed source?
 
-Because I'm lazy. I can't really imagine any pull requests, so why should I bother? That may change in the future however, but don't hold your breath while waiting.
+Because I don't want to give away the source until I get compensation for my expenses.
 
 #### [General] How do I change the service name advertised by mDNS?
 
-On Android the service name is the same as the Bluetooth device name. So to change it, go to the Bluetooth settings and choose "Rename this device".
+On Android the service name is the same as the Bluetooth device name. So to change it, go to the Bluetooth settings and open "Rename this device" where you can choose a new name.
 
 In the desktop application you can change the service name by providing a command-line argument, e.g. `--name "Steve's Laptop"`.
 
