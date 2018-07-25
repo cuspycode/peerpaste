@@ -12,7 +12,7 @@ Features:
 
 ## How to install
 
-First you need to have Java 8 installed on your machine. Then download `peerpaste.jar` and the shell script `peerpaste-server`. The jar will work on any machine that supports Java 8 or later. The shell script is a trivial wrapper that will work on any machine that supports a POSIX shell.
+First you need to have Java installed on your machine. Then download `peerpaste.jar` and the shell script `peerpaste-server`. The jar will work on any machine that supports Java 8 or later. The shell script is a trivial wrapper that will work on any machine that supports a POSIX shell.
 
 ## How to run
 
