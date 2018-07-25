@@ -1,22 +1,26 @@
 PeerPaste Desktop
 =================
 
-This repository hosts the desktop edition of PeerPaste, a program that allows cut & paste between peers on a network. It is the companion application for the mobile PeerPaste app, which is currently available for Android on the Google Play Store.
+This repository hosts the desktop edition of PeerPaste, a program that allows cut & paste between peers on a network. It is the companion application to the mobile PeerPaste app, which is currently available for Android on the Google Play Store.
 
 Features:
 
 * Automatic service discovery &mdash; once a device starts the app, other devices on the same local network will discover it automatically, so no configuration is needed.
 * Encrypted data &mdash; the content that is pasted is encrypted in transit.
-* Peer-to-peer key sharing &mdash; the encryption keys are shared via scanning of out-of-band QR codes. There is no dependency on any centralized authority.
+* Peer-to-peer key sharing &mdash; the encryption keys are shared via scanning out-of-band QR codes. There is no dependency on any centralized authority.
 * Completely cloudless &mdash; Apart from the initial install (and any voluntary updates), no external servers are involved.
 
 ## How to install
 
-First you need to have Java 8 installed on your machine. Then download `peerpaste.jar` and optionally download the shell script `peerpaste-server`. The jar will work on any machine that supports Java 8 or later. The shell script will work on any machine that supports a POSIX shell.
+First you need to have Java 8 installed on your machine. Then download `peerpaste.jar` and the shell script `peerpaste-server`. The jar will work on any machine that supports Java 8 or later. The shell script is a trivial wrapper that will work on any machine that supports a POSIX shell.
 
 ## How to run
 
-Run the command `./peerpaste-server`. Bla bla bla service name.
+Run the command `./peerpaste-server`.
+
+Add "`--help`" to get a list of command-line options. See the FAQ section below for some useful options.
+
+Stop the server by typing ^C, or terminate it with the `kill` command if you are running it in the background.
 
 ## FAQ
 
@@ -33,11 +37,11 @@ Another possibility is that you have an exceptional network configuration that c
 
 #### [General] Why should I trust your app to handle my secret data?
 
-One major use case for PeerPaste is to paste passwords or password-reset links or signup confirmation links etc, from one device to another. This of course requires trusting that the app is secure. The encryption and decryption code used in the desktop edition is published here on GitHub. It uses standard industry practices, and it's open for anyone to audit. The exact same code is used in the Android version, with the exception of a couple of trivial differences in how the `Base64` library is called in the different Java versions.
+One major use case for PeerPaste is to paste passwords or password-reset links or signup confirmation links etc, from one device to another. This of course requires trusting that the app is secure. The encryption and decryption code used in the desktop edition is published here on GitHub. It uses industry standard practices, and it's open for anyone to audit. The exact same code is used in the Android version, with the exception of a couple of trivial differences in how the `Base64` library is called due to differences in the Java versions.
 
 #### [Android] Why do I get a Cryptographic failure error?
 
-Either your Android version is too old to support the required crypto algorithm (AES-128/GCM), or you live in a country with a fascist government that restricts the use of strong cryptography. In either case this means that you cannot run PeerPaste on your device, and unfortunately there is nothing I can do about it.
+Either your Android version is too old to support the required crypto algorithm (AES-128/GCM), or you live in a country with a fascist government that restricts the use of strong cryptography. In either case this means that you cannot run PeerPaste on your Android device, and unfortunately there is nothing I can do about it.
 
 #### [Android] Why does the Android app cost money?
 
@@ -69,6 +73,10 @@ By default, the desktop application uses full pixel antialiasing on Linux, which
 * `lcd_vbgr`
 * `lcd` &mdash; same as `lcd_hrbg`
 * `default` &mdash; revert to Java's default, which may or may not be no antialiasing at all.
+
+#### [iOS] Is there a version available for iOS?
+
+Not at the moment. Apple charges $99 per year for iOS development, while Google "only" charges a one-time $25 fee. This is an obvious financial disincentive. Also, porting to iOS is tricky since iOS doesn't provide support for portable programming languages. All PeerPaste code so far is written in Java, the most portable of all programming languages. But Steve Jobs decided to ban all portable programming languages from the iOS platform, in one of his rare uninspired and downright counterproductive decisions. So porting to iOS would involve a complete rewrite in a new programming language, plus me paying extra fees on top of that. I'll be happy to do it if I get motivated enough, but right now this is not happening.
 
 
 
