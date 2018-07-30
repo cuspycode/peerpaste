@@ -49,7 +49,7 @@ Because it cost me money to publish the app on the Play Store.
 
 #### [Android] Why is the Android app closed source?
 
-Because I don't want to give away the source until I get compensation for my expenses.
+Because I don't want to give away the source until I get compensation for my expenses for publishing the Android app.
 
 #### [General] How do I change the service name advertised by mDNS?
 
@@ -73,6 +73,8 @@ By default, the desktop application uses full pixel antialiasing on Linux, which
 * `lcd_vbgr`
 * `lcd` &mdash; same as `lcd_hrbg`
 * `default` &mdash; revert to Java's default, which may or may not be no antialiasing at all.
+
+Try them one at a time until you find one that looks good on your desktop screen.
 
 #### [iOS] Is there a version available for iOS?
 
