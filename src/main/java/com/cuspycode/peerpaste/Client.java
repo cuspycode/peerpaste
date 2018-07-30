@@ -58,6 +58,7 @@ public class Client {
 	    String line = command+ "\n";
 	    out.write(line.getBytes());
 	    String peerCommand = Server.readPeerCommand(in);
+	    // Check for peerCommand == null here...
 	    String sendCmdPrefix = SEND_COMMAND+ " ";
 	    if (peerCommand.startsWith(sendCmdPrefix)) {
 		int declaredSize = Integer.parseInt(peerCommand.substring(sendCmdPrefix.length()));

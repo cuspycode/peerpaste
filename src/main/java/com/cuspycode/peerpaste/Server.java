@@ -9,6 +9,7 @@ import java.net.SocketTimeoutException;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Base64;			// For debugging
+import javax.crypto.AEADBadTagException;
 
 public class Server {
 
@@ -89,9 +90,13 @@ public class Server {
 
 		String sharedSecret = Secrets.getSecret(remoteName);
 		if (sharedSecret != null) {
-		    String result = new String(Crypto.decrypt(resultBytes, sharedSecret));
-		    GUI.println("result string: '" +result+ "'");
-		    GUI.paste(result);
+		    try {
+			String result = new String(Crypto.decrypt(resultBytes, sharedSecret));
+			GUI.println("result string: '" +result+ "'");
+			GUI.paste(result);
+		    } catch (AEADBadTagException e) {
+			GUI.println("\nWrong cryptographic key. Please delete the saved peer secret and try again\n");
+		    }
 		} else {
 		    GUI.println("\nMissing decryption secret. Please delete the key from the peer device and try again\n");
 		}
