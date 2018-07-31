@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import org.json.JSONException;
 
 public class Secrets {
+    public static final int FORMAT_VERSION = 1;
     private static final long CACHE_EXPIRY_MILLIS = 10000;
 
     private static SecureRandom rng = new SecureRandom();
@@ -64,7 +65,7 @@ public class Secrets {
 
     public static void putSecret(String peerName, String secret) {
 	maybeLoad();
-	Entry entry = new Entry(secret, System.currentTimeMillis(), 1);
+	Entry entry = new Entry(secret, System.currentTimeMillis(), FORMAT_VERSION);
 	ephemeralMap.put(peerName, entry);
 	Persistence.save(exportToJSON());
     }
