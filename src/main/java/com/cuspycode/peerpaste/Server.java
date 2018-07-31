@@ -65,6 +65,10 @@ public class Server {
     }
 
     private static void handleCommand(Socket socket, String peerCommand, String data) {
+	if (peerCommand == null) {
+	    GUI.println("Lost connection to peer");
+	    return;
+	}
 	GUI.printlnDebug("handling peerCommand: '" +peerCommand+ "'");
 	try {
 	    OutputStream out = socket.getOutputStream();
