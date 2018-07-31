@@ -32,7 +32,9 @@ public class Server {
 	Runtime.getRuntime().addShutdownHook(new Thread() {
 		public void run() {
 		    if (Publish.ifAddr != null) {
-			GUI.println("\nShutting down...");
+			String shutdownMsg = "\nShutting down...";
+			GUI.println(shutdownMsg);
+			System.err.println(shutdownMsg);
 			try {
 			    Publish.stop();
 			} catch (IOException e) {

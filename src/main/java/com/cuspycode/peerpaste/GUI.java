@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.awt.Insets;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
@@ -58,6 +59,7 @@ public class GUI {
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    text = new JTextArea(TEXT_ROWS, TEXT_COLUMNS);
 	    text.setEditable(false);
+	    text.setMargin(new Insets(5, 10, 5, 10));
 	    getContentPane().add(text);
 	    pack();
 	}
