@@ -27,6 +27,7 @@ public class GUI {
     private static final int TEXT_COLUMNS = 50;
 
     public static RootFrame rootFrame = null;
+    public static JFrame qrCodeFrame = null;
     public static String headlessClipboard = "foobar";
 
     public static void main(String[] args) throws Exception {
@@ -171,7 +172,12 @@ public class GUI {
 		}
 	    }
 	}
-	JFrame frame = new JFrame();
+	JFrame frame = qrCodeFrame;
+	if (frame == null) {
+	    frame = new JFrame();
+	    qrCodeFrame = frame;
+	}
+	frame.getContentPane().removeAll();
 	frame.setTitle("PeerPaste encryption key");
 	frame.setLocationRelativeTo(rootFrame);
 	Icon icon = new ImageIcon(image);
@@ -180,6 +186,13 @@ public class GUI {
 	frame.getContentPane().add(label);
 	frame.pack();
 	frame.setVisible(true);
+    }
+
+    public static void hideQRCodeImage() {
+	if (qrCodeFrame != null) {
+	    qrCodeFrame.setVisible(false);
+	    qrCodeFrame.dispose();
+	}
     }
 }
 

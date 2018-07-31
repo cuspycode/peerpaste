@@ -72,6 +72,7 @@ public class Server {
 	    return;
 	}
 	GUI.printlnDebug("handling peerCommand: '" +peerCommand+ "'");
+	GUI.hideQRCodeImage();
 	try {
 	    OutputStream out = socket.getOutputStream();
 	    InputStream in = socket.getInputStream();
