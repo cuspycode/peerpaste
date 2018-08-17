@@ -66,7 +66,7 @@ public class Client {
 		byte[] resultBytes = Server.readBytes(in, declaredSize);
 		String result = new String(Crypto.decrypt(resultBytes, Secrets.getSecret(remoteName)));
 
-		GUI.println("result string: '" +result+ "'");
+		GUI.println("Result string: \"" +result+ "\"");
 	    }
 	}
     }
