@@ -99,7 +99,7 @@ public class Server {
 		if (sharedSecret != null) {
 		    try {
 			String result = new String(Crypto.decrypt(resultBytes, sharedSecret));
-			GUI.println("Result string: \"" +result+ "\"");
+			GUI.println("Received text: \"" +result+ "\"");
 			GUI.paste(result);
 		    } catch (AEADBadTagException e) {
 			GUI.println("\nWrong cryptographic key. Please delete the saved peer secret and try again\n");
@@ -110,6 +110,9 @@ public class Server {
 
 	    } else if (peerCommand.equals(RECEIVE_COMMAND)) {
 		data = GUI.copy();
+		if (data == null) {
+		    data = "";
+		}
 		byte[] dataBytes = Crypto.encrypt(data.getBytes(), Secrets.getSecret(remoteName));
 		String command = sendCmdPrefix + dataBytes.length + "\n";
 		out.write(command.getBytes());
