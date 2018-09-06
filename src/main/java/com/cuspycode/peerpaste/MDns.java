@@ -49,7 +49,6 @@ public class MDns {
         @Override
         public void serviceResolved(ServiceEvent event) {
 	    ServiceInfo serviceInfo = event.getInfo();
-            System.out.println("Service resolved: " + serviceInfo);
 	    int port = serviceInfo.getPort();
 	    InetAddress ia4 = null;
 	    InetAddress ia6 = null;
