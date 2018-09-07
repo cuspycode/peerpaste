@@ -8,19 +8,19 @@ Features:
 * Automatic service discovery &mdash; once a device starts the app, other devices on the same local network will discover it automatically, so no configuration is needed.
 * Encrypted data &mdash; the content that is pasted is encrypted in transit.
 * Peer-to-peer key sharing &mdash; the encryption keys are shared via scanning out-of-band QR codes. There is no dependency on any centralized authority.
-* Completely cloudless &mdash; Apart from the initial install (and any voluntary updates), no external servers are involved.
+* Completely cloudless &mdash; Apart from the initial install (and any voluntary updates), no external servers are involved, ever.
 
 ## How to install
 
-First you need to have Java installed on your machine. Then download `peerpaste.jar` and the shell script `peerpaste-server`. The jar will work on any machine that supports Java 8 or later. The shell script is a trivial wrapper that will work on any machine that supports a POSIX shell.
+First you need to have Java installed on your machine. Then download `peerpaste.jar` and the shell script `peerpaste`. The jar will work on any machine that supports Java 8 or later. The shell script is a trivial wrapper that will work on any machine that supports a POSIX shell.
 
 ## How to run
 
-Run the command `./peerpaste-server`.
+Run the command `./peerpaste` to start the server.
 
 Add "`--help`" to get a list of command-line options. See the FAQ section below for some useful options.
 
-Stop the server by typing ^C, or terminate it with the `kill` command if you are running it in the background.
+Stop the peerpaste server by typing ^C, or terminate it with the `kill` command if you are running it in the background.
 
 ## FAQ
 
@@ -37,7 +37,7 @@ Another possibility is that you have an exceptional network configuration that c
 
 #### [General] Why should I trust your app to handle my secret data?
 
-One major use case for PeerPaste is to paste passwords or password-reset links or signup confirmation links etc, from one device to another. This of course requires trusting that the app is secure. The encryption and decryption code used in the desktop edition is published here on GitHub. It uses industry standard practices, and it's open for anyone to audit. The exact same code is used in the Android version, with the exception of a couple of trivial differences in how the `Base64` library is called due to differences in the Java versions.
+One major use case for PeerPaste is to paste passwords or password-reset links or signup confirmation links etc, from one device to another. This of course requires trusting that the app is secure. The encryption and decryption code used in the desktop edition is published here on GitHub. It uses industry standard practices, and it's open for anyone to audit. The exact same code is used in the Android version, with the exception of a couple of trivial differences in how the `Base64` library is called due to differences in the Java library versions.
 
 #### [Android] Why do I get a Cryptographic failure error?
 
@@ -63,6 +63,10 @@ This is only possible in the desktop application. You can either provide the IP 
 
 You can also specify the port number via e.g. `--port 12345`. The default is a random port number picked by the operating system.
 
+#### [Linux desktop] The clipboard is cleared when the application exits!
+
+This is a known bug in the Xorg/X11 clipboard design. The X clipboard is only a reference to the original data, so when the originating application exits, the reference doesn't refer to anything anymore. The solution is to either use the clipboard data before exiting peerpaste desktop, or by running a clipboard manager (e.g. `xsel` or some other alternative).
+
 #### [Linux desktop] Why is the text so fuzzy?
 
 By default, the desktop application uses full pixel antialiasing on Linux, which looks fuzzy when compared to the more commonly used subpixel antialiasing. The reason is that Java can't determine the subpixel arrangement when running on Linux. But you can enable subpixel antialiasing explicitly by providing the command-line argument `--aa <VALUE>` where `<VALUE>` is one of:
@@ -78,7 +82,5 @@ Try them one at a time until you find one that looks good on your desktop screen
 
 #### [iOS] Is there a version available for iOS?
 
-Not at the moment. Apple charges $99 per year for iOS development, while Google "only" charges a one-time $25 fee. This is an obvious financial disincentive. Also, porting to iOS is tricky since iOS doesn't provide support for portable programming languages. All PeerPaste code so far is written in Java, the most portable of all programming languages. But Steve Jobs decided to ban all portable programming languages from the iOS platform, in one of his rare uninspired and downright counterproductive decisions. So porting to iOS would involve a complete rewrite in a new programming language, plus me paying extra fees on top of that. I'll be happy to do it if I get motivated enough, but right now this is not happening.
-
-
+Not yet, but maybe it will happen if there is enough demand.
 
