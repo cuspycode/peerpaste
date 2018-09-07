@@ -10,7 +10,7 @@ import javax.jmdns.ServiceInfo;
 import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceListener;
 
-public class MDns {
+public class Resolver {
     public static void main(String[] args) throws IOException {
 	final JmDNS jmdns = JmDNS.create();
 
