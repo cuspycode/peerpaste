@@ -49,7 +49,7 @@ Because I would like to recover some of my costs for developing and publishing t
 
 #### [Android] Why is the Android app closed source?
 
-Because I currently have no incentive to publish the source code for the Android app. This might change in the future however.
+Because I currently have no incentive to do the work involved in publishing the source code for the Android app. This might change in the future however.
 
 #### [iOS] Is there a version available for iOS?
 
