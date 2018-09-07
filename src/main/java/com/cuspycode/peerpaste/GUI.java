@@ -50,13 +50,12 @@ public class GUI {
 	    println(op + " '" +connectTarget+ "'");
 	    startClient();
 	    if (rootFrame != null) {
-		println("Exiting.");
-		try {
-		    Thread.sleep(5000);
-		} catch (InterruptedException e) {
-		    // ignore
+		if (connectReceiveMode) {
+		    println("Close this window to exit.");
+		} else {
+		    printlnDebug("Exiting.");
+		    rootFrame.dispose();
 		}
-		rootFrame.dispose();
 	    }
 	} else {
 	    println("Starting server");
