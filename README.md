@@ -51,6 +51,10 @@ Because I would like to recover some of my costs for developing and publishing t
 
 Because I don't want to give away the source until I get compensation for my expenses for publishing the Android app.
 
+#### [iOS] Is there a version available for iOS?
+
+Not yet, but maybe it will happen if there is enough demand.
+
 #### [General] How do I change the service name advertised by mDNS?
 
 On Android the service name is the same as the Bluetooth device name. So to change it, go to the Bluetooth settings and open "Rename this device" where you can choose a new name.
@@ -80,7 +84,7 @@ By default, the desktop application uses full pixel antialiasing on Linux, which
 
 Try them one at a time until you find one that looks good on your desktop screen.
 
-#### [iOS] Is there a version available for iOS?
+#### [Linux headless] What if I'm not running a graphic console?
 
-Not yet, but maybe it will happen if there is enough demand.
+The desktop application has a headless mode which allows you to send and receive data via the text console's stdin and stdout.
 
