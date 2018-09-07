@@ -21,7 +21,7 @@ public class Client {
 	    myData = args[2];
 	}
 
-	long timeout = 10*1000L;
+	long timeout = 30*1000L;
 	if (!Resolver.resolve(target, timeout)) {
 	    GUI.println("Couldn't resolve peer '" +target+ "', exiting.");
 	    return;
@@ -55,6 +55,10 @@ public class Client {
 
     private static void handleCommand(String command, String myData, String remoteName, OutputStream out, InputStream in) throws Exception {
 	if (SEND_COMMAND.equals(command)) {
+	    myData = GUI.copy();
+	    if (myData == null) {
+		myData = "";
+	    }
 	    byte[] myBytes = Crypto.encrypt(myData.getBytes(), Secrets.getSecret(remoteName));
 	    String line = command+ " " +myBytes.length+ "\n";
 	    out.write(line.getBytes());
@@ -73,6 +77,7 @@ public class Client {
 		String result = new String(Crypto.decrypt(resultBytes, Secrets.getSecret(remoteName)));
 
 		GUI.println("Received text: \"" +result+ "\"");
+		GUI.paste(result);
 	    }
 	}
     }

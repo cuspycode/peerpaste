@@ -29,6 +29,8 @@ public class GUI {
     public static RootFrame rootFrame = null;
     public static JFrame qrCodeFrame = null;
     public static String headlessClipboard = "foobar";
+    public static String connectTarget = null;
+    public static boolean connectReceiveMode = false;
 
     public static void main(String[] args) throws Exception {
 	parseOptions(args);
@@ -43,8 +45,23 @@ public class GUI {
 	    rootFrame = new RootFrame();
 	    rootFrame.setVisible(true);
 	}
-	println("Starting server");
-	startServer();
+	if (connectTarget != null) {
+	    String op = (connectReceiveMode? "Receiving from" : "Sending to");
+	    println(op + " '" +connectTarget+ "'");
+	    startClient();
+	    if (rootFrame != null) {
+		println("Exiting.");
+		try {
+		    Thread.sleep(5000);
+		} catch (InterruptedException e) {
+		    // ignore
+		}
+		rootFrame.dispose();
+	    }
+	} else {
+	    println("Starting server");
+	    startServer();
+	}
     }
 
     public static class RootFrame extends JFrame {
@@ -64,6 +81,11 @@ public class GUI {
 	    getContentPane().add(text);
 	    pack();
 	}
+    }
+
+    private static void startClient() throws Exception {
+	String command = (connectReceiveMode? "RECEIVE" : "SEND");
+	Client.main(new String[] { connectTarget, command });
     }
 
     private static void startServer() throws Exception {
@@ -109,6 +131,14 @@ public class GUI {
 		break;
 	    case "--name":
 		Publish.serviceName = args[i++];
+		break;
+	    case "--send-to":
+		connectTarget = args[i++];
+		connectReceiveMode = false;
+		break;
+	    case "--receive-from":
+		connectTarget = args[i++];
+		connectReceiveMode = true;
 		break;
 	    case "--port":
 		Publish.servicePort = Integer.parseInt(args[i++]);
