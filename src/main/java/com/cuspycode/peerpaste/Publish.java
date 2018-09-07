@@ -52,6 +52,13 @@ public class Publish {
 	jmdns.unregisterAllServices();
     }
 
+    public static String getOwnName() {
+	if (serviceName == null) {
+	    getInterfaceIP(ifName, false);
+	}
+	return serviceName;
+    }
+
     private static String getInterfaceIP(String ifname, boolean ipv6) {
         try {
             Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();

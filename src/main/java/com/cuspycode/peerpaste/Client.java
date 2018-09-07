@@ -21,9 +21,15 @@ public class Client {
 	    myData = args[2];
 	}
 
-	Socket socket = new Socket(target, 1234);	// Replace with mDNS-resolved info...
+	long timeout = 10*1000L;
+	if (!Resolver.resolve(target, timeout)) {
+	    GUI.println("Couldn't resolve peer '" +target+ "', exiting.");
+	    return;
+	}
+	Socket socket = new Socket(Resolver.getAddress(), Resolver.getPort());
+
 	OutputStream out = socket.getOutputStream();
-	String line = ME_COMMAND+ " Your friendly Java server\n";
+	String line = ME_COMMAND+ " " +Publish.getOwnName()+ "\n";
 	if (command.startsWith("+")) {
 	    command = command.substring(1);
 	    line = OOB_COMMAND+ line.substring(ME_COMMAND.length());

@@ -11,31 +11,26 @@ import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceListener;
 
 public class Resolver {
+    private final static Object lock = new Object();
+
+    private static InetAddress address;
+    private static int port;
+
     public static void main(String[] args) throws IOException {
-	final JmDNS jmdns = JmDNS.create();
-
-
-	Runtime.getRuntime().addShutdownHook(new Thread() {
-		public void run() {
-		    try {
-			System.out.println("\nShutting down...");
-			jmdns.close();
-		    } catch (IOException e) {
-		    }
-		}
-	    });
-
-	String serviceType = "_peerpaste._tcp.local.";
-	jmdns.addServiceListener(serviceType, new SampleListener());
-	while (true) {
-	    try {
-		Thread.sleep(5000);
-	    } catch (InterruptedException e) {
-	    }
+	if (resolve("foobar", 30000)) {
+	    System.out.println("Resolved: " +getAddress()+ ":" +getPort());
+	} else {
+	    System.out.println("Timeout");
 	}
     }
 
-    static class SampleListener implements ServiceListener {
+    static class MyServiceListener implements ServiceListener {
+	private String target;
+
+	public MyServiceListener(String target) {
+	    this.target = target;
+	}
+
         @Override
         public void serviceAdded(ServiceEvent event) {
             System.out.println("Service added   : " + event.getName() + "." + event.getType());
@@ -64,9 +59,46 @@ public class Resolver {
 	    if (theAddress == null) {
 		theAddress = ia6;
 	    }
-	    System.out.println("      " +theAddress+ ":" +port);
+	    if (target.equals(serviceInfo.getName())) {
+		Resolver.address = theAddress;
+		Resolver.port = port;
+		synchronized(lock) {
+		    lock.notify();
+		}
+	    }
         }
     }
 
+    public static boolean resolve(String peerName, long timeout) throws IOException {
+	final JmDNS jmdns = JmDNS.create();
+
+	address = null;
+	port = 0;
+
+	ServiceListener serviceListener = new MyServiceListener(peerName);
+	String serviceType = "_peerpaste._tcp.local.";
+	jmdns.addServiceListener(serviceType, serviceListener);
+	long stopTime = System.currentTimeMillis() + timeout;
+	synchronized(lock) {
+	    for (long now; address == null && (now = System.currentTimeMillis()) < stopTime;) {
+		try {
+		    lock.wait(stopTime - now);
+		} catch (InterruptedException e) {
+		    // just keep going
+		}
+	    }
+	}
+	//jmdns.removeServiceListener(serviceType, serviceListener);
+	jmdns.close();
+	return (address != null);
+    }
+
+    public static InetAddress getAddress() {
+	return address;
+    }
+
+    public static int getPort() {
+	return port;
+    }
 }
 
