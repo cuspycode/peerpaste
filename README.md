@@ -45,7 +45,7 @@ Either your Android version is too old to support the required crypto algorithm 
 
 #### [Android] Why does the Android app cost money?
 
-Because it cost me money to publish the app on the Play Store.
+Because I would like to recover some of my costs for developing and publishing the Android app.
 
 #### [Android] Why is the Android app closed source?
 
