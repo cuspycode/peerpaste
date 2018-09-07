@@ -30,7 +30,7 @@ Frequently Asked Questions, preloaded with a few anticipated questions.
 
 This is most likely caused by network connectivity issues:
 
-* Make sure your devices don't block mDNS or mDNS-advertised traffic.
+* Make sure your devices or your router don't block mDNS or mDNS-advertised traffic.
 * If the peer devices are connected to different LANs, they will be on different broadcast domains, and mDNS will not work by default. This can be solved by setting up proper IP multicast that works across both LANs, or by ensuring that both devices are connected to the same LAN.
 
 Another possibility is that you have an exceptional network configuration that causes the desktop server to pick the wrong IP address to advertise on mDNS, which makes it unavailable to other devices even though they are connected to the same LAN. This can be remedied by following the instructions in the FAQ answer *How do I bind the listening port to a different IP address?*
