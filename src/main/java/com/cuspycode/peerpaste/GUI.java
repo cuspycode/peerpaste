@@ -1,5 +1,8 @@
 package com.cuspycode.peerpaste;
 
+import java.io.InputStream;
+import java.io.IOException;
+
 import com.google.zxing.common.BitMatrix;
 
 import java.awt.GraphicsEnvironment;
@@ -122,6 +125,13 @@ public class GUI {
 	while (i < args.length) {
 	    String opt = args[i++];
 	    switch (opt) {
+	    case "--help":
+		if (printHelp()) {
+		    System.exit(0);
+		} else {
+		    System.exit(1);
+		}
+		break;
 	    case "--aa":
 		System.setProperty(AA_PROP_KEY, args[i++]);
 		break;
@@ -152,6 +162,22 @@ public class GUI {
 		System.err.println("Unrecognized option: " +opt);
 	    }
 	}
+    }
+
+    private static boolean printHelp() {
+	InputStream s = GUI.class.getResourceAsStream("help.txt");
+	try {
+	    byte[] buf = new byte[8192];
+	    int n;
+	    while ((n = s.read(buf)) != -1) {
+		System.out.write(buf, 0, n);
+	    }
+	    s.close();
+	    return true;
+	} catch(IOException e) {
+	    e.printStackTrace();
+	}
+	return false;
     }
 
     public static void paste(String data) {

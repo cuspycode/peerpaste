@@ -1,0 +1,2 @@
+Usage: peerpaste [OPTIONS]
+
