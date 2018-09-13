@@ -25,6 +25,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public class GUI {
+    private static final String VERSION = "0.9";
     private static final String AA_PROP_KEY = "awt.useSystemAAFontSettings";
     private static final int TEXT_ROWS = 5;
     private static final int TEXT_COLUMNS = 50;
@@ -134,6 +135,10 @@ public class GUI {
 		} else {
 		    System.exit(1);
 		}
+		break;
+	    case "--version":
+		System.out.println(VERSION);
+		System.exit(0);
 		break;
 	    case "--aa":
 		System.setProperty(AA_PROP_KEY, args[i++]);
