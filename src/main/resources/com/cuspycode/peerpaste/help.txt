@@ -7,6 +7,9 @@ The other peer is currently expected to be the PeerPaste mobile app, since
 sharing of encryption keys involves scanning a QR code displayed on the
 desktop screen.
 
+Stop the server by typing ^C, or terminate it with the kill command if you
+are running it in the background.
+
 OPTIONS:
     --version
 		Print the software version and exit.
