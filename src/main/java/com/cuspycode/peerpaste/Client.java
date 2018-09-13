@@ -63,7 +63,7 @@ public class Client {
 	    String line = command+ " " +myBytes.length+ "\n";
 	    out.write(line.getBytes());
 	    out.write(myBytes);
-	    Server.swallowStream(in);
+	    Server.readOK(in);
 	    GUI.println("Sent " +myBytes.length+ " bytes.");
 	} else if (RECEIVE_COMMAND.equals(command)){
 	    String line = command+ "\n";
@@ -76,6 +76,7 @@ public class Client {
 
 		byte[] resultBytes = Server.readBytes(in, declaredSize);
 		String result = new String(Crypto.decrypt(resultBytes, Secrets.getSecret(remoteName)));
+		out.write("OK\n".getBytes());
 
 		GUI.println("Received " +result.getBytes().length+ " bytes.");
 		GUI.printlnDebug("Received text: \"" +result+ "\"");

@@ -99,6 +99,7 @@ public class Server {
 		if (sharedSecret != null) {
 		    try {
 			String result = new String(Crypto.decrypt(resultBytes, sharedSecret));
+			out.write("OK\n".getBytes());
 			GUI.println("Received text: \"" +result+ "\"");
 			GUI.paste(result);
 		    } catch (AEADBadTagException e) {
@@ -117,6 +118,7 @@ public class Server {
 		String command = sendCmdPrefix + dataBytes.length + "\n";
 		out.write(command.getBytes());
 		out.write(dataBytes);
+		readOK(in);
 	    }
 	    socket.close();
 	} catch (Exception e) {
@@ -125,21 +127,33 @@ public class Server {
 	}
     }
 
-    public static String readPeerCommand(InputStream in) throws IOException {
-	String peerCommand = null;
-	byte buf[] = new byte[1024];
+    private static String readBoundedLine(InputStream in, int bound) throws IOException {
+	String line = null;
+	byte buf[] = new byte[bound];
 	for (int i=0; i<buf.length; i++) {
 	    int value = in.read();
 	    if (value == -1) {
 		break;
 	    }
 	    if (value == '\n') {
-		peerCommand = new String(buf, 0, i);
+		line = new String(buf, 0, i);
 		break;
 	    }
 	    buf[i] = (byte) value;
 	}
-	return peerCommand;
+	return line;
+    }
+
+    public static String readPeerCommand(InputStream in) throws IOException {
+	return readBoundedLine(in, 1024);
+    }
+
+    public static void readOK(InputStream in) throws IOException {
+	String line = readBoundedLine(in, 3);
+	swallowStream(in);
+	if (!"OK".equals(line)) {
+	    throw new IOException("Peer connection failed");
+	}
     }
 
     public static void swallowStream(InputStream in) throws IOException {
