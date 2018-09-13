@@ -100,7 +100,10 @@ public class Server {
 		    try {
 			String result = new String(Crypto.decrypt(resultBytes, sharedSecret));
 			out.write("OK\n".getBytes());
-			GUI.println("Received text: \"" +result+ "\"");
+			if (GUI.showData) {
+			    GUI.println("Received text: \"" +result+ "\"");
+			}
+			GUI.println("Received " +result.getBytes().length+ " bytes.");
 			GUI.paste(result);
 		    } catch (AEADBadTagException e) {
 			GUI.println("\nWrong cryptographic key. Please delete the saved peer secret and try again\n");

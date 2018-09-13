@@ -34,6 +34,7 @@ public class GUI {
     public static RootFrame rootFrame = null;
     public static JFrame qrCodeFrame = null;
     public static String headlessClipboard = "foobar";
+    public static boolean showData = false;
     public static String connectTarget = null;
     public static boolean connectReceiveMode = false;
 
@@ -168,6 +169,9 @@ public class GUI {
 		break;
 	    case "--interface":
 		Publish.ifName = args[i++];
+		break;
+	    case "--show-data":
+		showData = true;
 		break;
 	    default:
 		System.err.println("Unrecognized option: " +opt);
