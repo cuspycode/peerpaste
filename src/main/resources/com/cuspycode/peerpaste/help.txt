@@ -1,2 +1,11 @@
 Usage: peerpaste [OPTIONS]
 
+--aa LCD_TYPE
+--debug-level LEVEL
+--paste VALUE
+--name NAME
+--send-to TARGET
+--receive-from TARGET
+--port PORT
+--address ADDRESS
+--interface INTERFACE

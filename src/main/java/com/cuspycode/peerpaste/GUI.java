@@ -28,6 +28,7 @@ public class GUI {
     private static final String AA_PROP_KEY = "awt.useSystemAAFontSettings";
     private static final int TEXT_ROWS = 5;
     private static final int TEXT_COLUMNS = 50;
+    private static int debugLevel = 0;
 
     public static RootFrame rootFrame = null;
     public static JFrame qrCodeFrame = null;
@@ -117,7 +118,9 @@ public class GUI {
     }
 
     public static void printlnDebug(String message) {
-	System.err.println(message);
+	if (debugLevel > 0) {
+	    System.err.println(message);
+	}
     }
 
     private static void parseOptions(String[] args) {
@@ -134,6 +137,9 @@ public class GUI {
 		break;
 	    case "--aa":
 		System.setProperty(AA_PROP_KEY, args[i++]);
+		break;
+	    case "--debug-level":
+		debugLevel = Integer.parseInt(args[i++]);
 		break;
 	    case "--paste":
 		headlessClipboard = args[i++];

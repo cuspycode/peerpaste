@@ -122,7 +122,7 @@ public class Server {
 	    }
 	    socket.close();
 	} catch (Exception e) {
-	    System.out.println("error when handling '" +peerCommand+ "' : " +e);
+	    System.err.println("error when handling '" +peerCommand+ "' : " +e);
 	    e.printStackTrace();
 	}
     }
@@ -178,7 +178,7 @@ public class Server {
 	    receivedSize += nbytes;
 	}
 	if (receivedSize != declaredSize) {
-	    System.out.println("error: received " +receivedSize+ " bytes, expected " +declaredSize);
+	    GUI.println("Error: received " +receivedSize+ " bytes, expected " +declaredSize);
 	    accum.clear();
 	    receivedSize = 0;
 	}
