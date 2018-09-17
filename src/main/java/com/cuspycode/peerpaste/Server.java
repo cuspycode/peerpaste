@@ -34,7 +34,9 @@ public class Server {
 		    if (Publish.ifAddr != null) {
 			String shutdownMsg = "\nShutting down...";
 			GUI.println(shutdownMsg);
-			System.err.println(shutdownMsg);
+			if (GUI.rootFrame != null) {
+			    System.err.println(shutdownMsg);		// Window may already have disappeared
+			}
 			try {
 			    Publish.stop();
 			} catch (IOException e) {
