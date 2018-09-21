@@ -78,10 +78,10 @@ public class Client {
 		String result = new String(Crypto.decrypt(resultBytes, Secrets.getSecret(remoteName)));
 		out.write("OK\n".getBytes());
 
-		if (GUI.showData) {
-		    GUI.println("Received text: \"" +result+ "\"");
-		}
 		GUI.println("Received " +result.getBytes().length+ " bytes.");
+		if (GUI.showData) {
+		    GUI.println("Received text is \"" +result+ "\"");
+		}
 		GUI.paste(result);
 	    }
 	}
