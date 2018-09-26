@@ -151,7 +151,7 @@ public class GUI {
 		headlessClipboard = args[i++];
 		break;
 	    case "--name":
-		Publish.serviceName = args[i++];
+		Publish.serviceName = Publish.sanitizeServiceName(args[i++]);
 		break;
 	    case "--send-to":
 		connectTarget = args[i++];

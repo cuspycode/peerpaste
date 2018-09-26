@@ -74,9 +74,9 @@ public class Publish {
 				GUI.println("Own IP is " +ip+ " on interface \"" +i.getName()+ "\"");
 				if (serviceName == null) {
 				    try {
-					serviceName = InetAddress.getLocalHost().getHostName();
+					serviceName = sanitizeServiceName(InetAddress.getLocalHost().getHostName());
 				    } catch (UnknownHostException ue) {
-					serviceName = a.getHostName();
+					serviceName = sanitizeServiceName(a.getHostName());
 				    }
 				}
                                 return ip;
@@ -90,6 +90,11 @@ public class Publish {
 	    System.out.println("Couldn't find interface " +ifname);
         }
         return null;
+    }
+
+    public static String sanitizeServiceName(String x) {
+	// We need to get rid of all dots in the name since they will mess up mDNS.
+	return x.replaceAll("\\.", "_");
     }
 
 }
