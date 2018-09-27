@@ -1,26 +1,37 @@
-PeerPaste Desktop
-=================
+PeerPaste
+=========
 
-This repository hosts the desktop edition of PeerPaste, a program that allows cut & paste between peers on a network. It is the companion application to the mobile PeerPaste app, which is currently available for Android on the Google Play Store.
+PeerPaste lets you copy and paste text between two devices that are present on the same local network (LAN). The data transfer is encrypted, so you can transfer confidential things like passwords via PeerPaste without having to worry about eavesdroppers. The encryption key is transferred by scanning a QR code with the mobile's camera, so there is no public-key cloud infrastructure involved, or any cloud services at all actually. It's all peer-to-peer on the local network.
 
 Features:
 
 * Automatic service discovery &mdash; once a device starts the app, other devices on the same local network will discover it automatically, so no configuration is needed.
-* Encrypted data &mdash; the content that is pasted is encrypted in transit.
-* Peer-to-peer key sharing &mdash; the encryption keys are shared via scanning out-of-band QR codes. There is no dependency on any centralized authority.
-* Completely cloudless &mdash; Apart from the initial install (and any voluntary updates), no external servers are involved, ever.
+* Encrypted data &mdash; the pasted content is encrypted in transit.
+* Peer-to-peer key sharing &mdash; the encryption keys are shared out-of-band via scanning of QR codes. There is no dependency on any central authority that has to be trusted.
+* Completely cloudless &mdash; The app does not involve any external servers. It's all peer-to-peer on the local network.
 
-## How to install
+## How to install Android version
 
-First you need to have Java installed on your machine. Then download `peerpaste.jar` and the shell script `peerpaste`. The jar will work on any machine that supports Java 8 or later. The shell script is a trivial wrapper that will work on any machine that supports a POSIX shell.
+Follow this link to the Google Play Store: xxxx  
+Works on Android 5.1 and later.
 
-## How to run
+## How to install iOS version
+
+The app is not yet available for iOS.
+
+## How to install generic desktop/laptop version
+
+First you need to have Java SE 8 installed on your machine. Later Java versions will likely work too. Then download `peerpaste.jar` and the shell script `peerpaste`. The shell script is a trivial wrapper that will work on any machine that supports a POSIX shell.
 
 Run the command `./peerpaste` to start the server.
 
 Add "`--help`" to get a list of command-line options. See the FAQ section below for some useful options.
 
 Stop the peerpaste server by typing ^C, or terminate it with the `kill` command if you are running it in the background.
+
+## How to install MacOS version
+
+This is just the generic version packaged as a MacOS app for convenience. To install, just download `PeerPaste.zip` and unzip it. The result is a MacOS app that you can move to the Applications folder, or put in the dock, or wherever you want. Java SE is a prerequisite, just like for the generic version.
 
 ## FAQ
 
@@ -37,15 +48,19 @@ Another possibility is that you have an exceptional network configuration that c
 
 #### [General] Why should I trust your app to handle my secret data?
 
-One major use case for PeerPaste is to paste passwords or password-reset links or signup confirmation links etc, from one device to another. This of course requires trusting that the app is secure. The encryption and decryption code used in the desktop edition is published here on GitHub. It uses industry standard practices, and it's open for anyone to audit. The exact same code is used in the Android version, with the exception of a couple of trivial differences in how the `Base64` library is called due to differences in the Java library versions.
+One major use case for PeerPaste is to paste passwords or password-reset links or signup confirmation links etc, from one device to another. This of course requires trusting that the app is secure. The encryption and decryption code used in the desktop edition is published here on GitHub. It uses industry standard practices, and it's open for anyone to audit. The exact same code is used in the Android version, with the exception of a couple of trivial differences in how the `Base64` library is invoked due to trivial differences in the Java library versions.
 
 #### [Android] Why do I get a Cryptographic failure error?
 
-Either your Android version is too old to support the required crypto algorithm (AES-128/GCM), or you live in a country with a fascist government that restricts the use of strong cryptography. In either case this means that you cannot run PeerPaste on your Android device, and unfortunately there is nothing I can do about it.
+Either your Android version is too old to support the required crypto algorithm (AES-128/GCM), or you live in a country with an evil government that restricts the use of strong cryptography. In either case this means that you cannot run PeerPaste on your Android device, and unfortunately there is nothing I can do about it.
 
 #### [Android] Why does the Android app cost money?
 
-Because I would like to recover some of my costs for developing and publishing the Android app.
+I would like to recover some of my costs for developing and publishing the Android app. Also, this is an app that I would happily pay for myself if someone else had authored it, so why shouldn't I expect the same from you?
+
+#### [Android] How can I try out the Android app before I decide whether or not to pay for it?
+
+You can install the free demo app `PeerPaste Demo`. If the demo version works on your device, then the real version will also work.
 
 #### [Android] Why is the Android app closed source?
 
@@ -53,13 +68,13 @@ Because I currently have no incentive to do the work involved in publishing the 
 
 #### [iOS] Is there a version available for iOS?
 
-Not yet, but maybe it will happen if there is enough demand.
+Not yet, but maybe it will happen if there is enough demand to motivate the effort.
 
 #### [General] How do I change the service name advertised by mDNS?
 
 On Android the service name is the same as the Bluetooth device name. So to change it, go to the Bluetooth settings and open "Rename this device" where you can choose a new name.
 
-In the desktop application you can change the service name by providing a command-line argument, e.g. `--name "Steve's Laptop"`.
+The desktop application uses the hostname by default. But the service name can be changed by providing a command-line argument, e.g. `--name "Steve's Laptop"`.
 
 #### [General] How do I bind the listening port to a different IP address?
 
@@ -86,5 +101,4 @@ Try them one at a time until you find one that looks good on your desktop screen
 
 #### [Linux headless] What if I'm not running a graphic console?
 
-The desktop application has a headless mode which allows you to send and receive data via the text console's stdin and stdout.
-
+The desktop application still works when running in headless mode, but you'll need to add the `--show-data` option to show received data, or the `--paste <TEXT>` option when sending data.
