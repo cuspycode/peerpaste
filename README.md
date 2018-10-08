@@ -1,2 +1,3 @@
 # peerpaste
-Copy and paste text between two devices on the local network
+
+Watch this space for the upcoming release of companion software for the peerpaste smartphone app.
