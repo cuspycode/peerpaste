@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
+import java.nio.file.attribute.PosixFilePermissions;
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -13,10 +14,29 @@ import org.json.JSONException;
 
 public class Persistence {
 
-    private static final String settingsDir = System.getProperty("user.home");
+    private static final String APP_DIRNAME = "peerpaste";
+    private static final String SETTINGS_FILENAME = "peerpaste-data.json";
+    private static final String settingsDir = obtainSettingsDir();
+
+    private static String obtainSettingsDir() {
+	String dirParent = System.getenv("XDG_DATA_HOME");
+	if (dirParent == null) {
+	    dirParent = System.getProperty("user.home") + "/.local/share";
+	}
+	Path dir = Paths.get(dirParent + "/" + APP_DIRNAME);
+	if (!Files.isDirectory(dir)) {
+	    try {
+		Files.createDirectories(dir);
+		Files.setPosixFilePermissions(dir, PosixFilePermissions.fromString("rwx------"));
+	    } catch (IOException e) {
+		throw new RuntimeException(e);
+	    }
+	}
+	return dir.toString();
+    }
 
     public static String settingsPath() {
-	return settingsDir + "/.peerpaste-settings";
+	return settingsDir + "/" + SETTINGS_FILENAME;
     }
 
     private static long latestLoadTime = 0;
@@ -43,7 +63,7 @@ public class Persistence {
     public static void save(JSONArray json) {
 	try {
 	    byte[] data = json.toString(4).getBytes("UTF-8");
-	    Path tmpPath = Files.createTempFile(Paths.get(settingsDir), ".peerpaste-settings-", "-tmp");
+	    Path tmpPath = Files.createTempFile(Paths.get(settingsDir), SETTINGS_FILENAME+ "-", "-tmp");
 	    Files.write(tmpPath, data);
 	    Files.move(tmpPath, Paths.get(settingsPath()), ATOMIC_MOVE, REPLACE_EXISTING);
 	} catch (IOException|JSONException e) {
