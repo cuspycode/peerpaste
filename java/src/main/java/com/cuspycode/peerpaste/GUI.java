@@ -33,7 +33,7 @@ public class GUI {
 
     public static RootFrame rootFrame = null;
     public static JFrame qrCodeFrame = null;
-    public static String headlessClipboard = "foobar";
+    public static String customPaste = null;
     public static boolean showData = false;
     public static String connectTarget = null;
     public static boolean connectReceiveMode = false;
@@ -148,7 +148,7 @@ public class GUI {
 		debugLevel = Integer.parseInt(args[i++]);
 		break;
 	    case "--paste":
-		headlessClipboard = args[i++];
+		customPaste = args[i++];
 		break;
 	    case "--name":
 		Publish.serviceName = Publish.sanitizeServiceName(args[i++]);
@@ -202,11 +202,19 @@ public class GUI {
 	    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 	    clipboard.setContents(selection, selection);
 	} else {
-	    printlnDebug("Faking paste of '" +data+ "'");
+	    String msg = "Headless paste";
+	    if (!showData) {
+		msg += ", use --show-data to show the data";
+	    }
+	    println(msg);
 	}
     }
 
     public static String copy() {
+	if (customPaste != null) {
+	    return customPaste;
+	}
+
 	String data = null;
 
 	if (rootFrame != null) {
@@ -223,7 +231,7 @@ public class GUI {
 		}
 	    }
 	} else {
-	    data = "Faked cliboard copy data";
+	    data = "Faked clipboard copy data";
 	}
 	return data;
     }
