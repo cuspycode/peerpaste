@@ -46,6 +46,10 @@ This is most likely caused by network connectivity issues:
 
 Another possibility is that you have an exceptional network configuration that causes the desktop server to pick the wrong IP address to advertise on mDNS, which makes it unavailable to other devices even though they are connected to the same LAN. This can be remedied by following the instructions in the FAQ answer *How do I bind the listening port to a different IP address?*
 
+#### [General] It keeps complaining that the crypto key isn't working!
+
+Normally you just click on "Settings" and delete the key on the mobile device, and then try again. But sometimes you need to delete the shared key on both devices. The easiest way to do that on the desktop application is to delete the file `.local/share/peerpaste/peerpaste-data.json` in your home directory, or if you are comfortable editing JSON files you can delete just the appropriate entry in this file.
+
 #### [General] Why should I trust your app to handle my secret data?
 
 One major use case for PeerPaste is to paste passwords or password-reset links or signup confirmation links etc, from one device to another. This of course requires trusting that the app is secure. The encryption and decryption code used in the desktop edition is published here on GitHub. It uses industry standard practices, and it's open for anyone to audit. The exact same code is used in the Android version, with the exception of a couple of trivial differences in how the `Base64` library is invoked due to trivial differences in the Java library versions.
@@ -54,21 +58,21 @@ One major use case for PeerPaste is to paste passwords or password-reset links o
 
 Either your Android version is too old to support the required crypto algorithm (AES-128/GCM), or you live in a country with an evil government that restricts the use of strong cryptography. In either case this means that you cannot run PeerPaste on your Android device, and unfortunately there is nothing I can do about it.
 
-#### [Android] Why does the Android app cost money?
+#### [Android] Why does the mobile app cost money?
 
-I would like to recover some of my costs for developing and publishing the Android app. Also, this is an app that I would happily pay for myself if someone else had authored it, so why shouldn't I expect the same from you?
+I would like to recover some of my costs for developing and publishing the app. Also, this is an app that I would happily pay for myself if someone else had authored it, so why shouldn't I expect the same from you?
 
-#### [Android] How can I try out the Android app before I decide whether or not to pay for it?
+#### [Android] How can I try out the mobile app before I decide whether or not to pay for it?
 
 You can install the free demo app `PeerPaste Demo`. If the demo version works on your device, then the real version will also work.
 
-#### [Android] Why is the Android app closed source?
+#### [Android] Why is the mobile app closed source?
 
-Because I currently have no incentive to do the work involved in publishing the source code for the Android app. This might change in the future however.
+Because I currently have no incentive to do the work involved in publishing the source code for the mobile app. This might change in the future however.
 
 #### [iOS] Is there a version available for iOS?
 
-Not yet, but maybe it will happen if there is enough demand to motivate the effort.
+Not yet, but maybe it could happen if there is enough demand to motivate the effort.
 
 #### [General] How do I change the service name advertised by mDNS?
 
