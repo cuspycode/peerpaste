@@ -21,6 +21,16 @@ public class Client {
 	    myData = args[2];
 	}
 
+	if (Secrets.getSecret(target) == null) {
+	    String errMsg = "\nCryptographic key is missing. Please restart in server mode to pair with peer device.\n";
+	    GUI.println(errMsg);
+	    if (GUI.rootFrame != null) {
+		System.err.println(errMsg);
+		Thread.sleep(10000);
+	    }
+	    return;
+	}
+
 	long timeout = 30*1000L;
 	if (!Resolver.resolve(target, timeout)) {
 	    GUI.println("Couldn't resolve peer '" +target+ "', exiting.");
