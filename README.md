@@ -12,7 +12,12 @@ Features:
 
 ## How to install Android version
 
-Follow this link to the Google Play Store: https://play.google.com/store/apps/details?id=com.cuspycode.android.peerpaste
+You can find it on the Google Play Store. It is recommended that you try the free demo version first:  
+https://play.google.com/store/apps/details?id=com.cuspycode.android.demo.peerpaste
+
+The unrestricted paid version is available here:  
+https://play.google.com/store/apps/details?id=com.cuspycode.android.peerpaste
+
 Works on Android 5.1 and later.
 
 ## How to install iOS version
