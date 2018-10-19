@@ -13,10 +13,10 @@ Features:
 ## How to install Android version
 
 You can find it on the Google Play Store. It is recommended that you try the free demo version first:  
-https://play.google.com/store/apps/testing/com.cuspycode.android.demo.peerpaste
+https://play.google.com/store/apps/details?id=com.cuspycode.android.demo.peerpaste
 
 The unrestricted paid version is available here:  
-https://play.google.com/store/apps/testing/com.cuspycode.android.peerpaste
+https://play.google.com/store/apps/details?id=com.cuspycode.android.peerpaste
 
 Works on Android 5.1 and later.
 
