@@ -1,0 +1,60 @@
+Usage: peerpaste [OPTIONS]
+
+Start a PeerPaste peer in server mode (the default) or in client mode (using
+the --send-to or --receive-from options). When connected to another peer,
+data may be copied & pasted between them using a secure encrypted channel.
+The other peer is currently expected to be the PeerPaste mobile app, since
+sharing of encryption keys involves scanning a QR code displayed on the
+desktop screen.
+
+Stop the server by typing ^C, or terminate it with the kill command if you
+are running it in the background.
+
+OPTIONS:
+    --version
+		Print the software version and exit.
+    --help
+		Print this help text and exit.
+    --name NAME
+		Use NAME as the name of the local machine for service
+		discovery purposes. The default is the local hostname of
+		the first non-loopback network address found at runtime.
+    --send-to TARGET
+		Run as a client and send data to the peer with the
+		service name TARGET.
+    --receive-from TARGET
+		Run as a client and receive data from the peer with the
+		service name TARGET.
+    --paste VALUE
+		Use VALUE for the data to send, instead of the local clipboard.
+    --show-data
+		Show received and sent data. The default is to only show
+		the number of bytes transferred.
+    --interface INTERFACE
+		Only consider the network interface named INTERFACE when
+		determining the default values for ADDRESS and NAME.
+		Useful when there are multiple network interfaces and the
+		algorithm picks the unintended one for service advertising.
+    --address ADDRESS
+		Use IP address ADDRESS for the advertised service.
+		The default is the first address of the first non-loopback
+		and non-linklocal interface found at runtime.
+    --port PORT
+		Use port number PORT for the advertised service.
+		The default is a port number randomly chosen by the OS.
+    --debug-level LEVEL
+		Print debug messages to stderr if LEVEL > 0.
+    --aa LCD_TYPE
+		Adjust subpixel antialiasing on graphical Linux desktops.
+		Note: no such adjustment is needed for non-Linux platforms.
+		The possible values for LCD_TYPE are:
+		    lcd_hrgb
+		    lcd_hbgr
+		    lcd_vrgb
+		    lcd_vbgr
+		    lcd — same as lcd_hrbg
+		    default — revert to Java's default, which may or may not
+		              be no antialiasing at all.
+		Use this option if you are running on a Linux desktop and if
+		graphics look either jagged (no antialiasing) or a bit fuzzy
+		(grayscale-only antialiasing).
