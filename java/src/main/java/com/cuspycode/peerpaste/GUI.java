@@ -6,12 +6,14 @@ import java.io.IOException;
 import com.google.zxing.common.BitMatrix;
 
 import java.awt.GraphicsEnvironment;
+import java.awt.GraphicsDevice;
+import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.FlowLayout;
-import java.awt.Toolkit;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
@@ -78,7 +80,8 @@ public class GUI {
 
 	private void init() {
 	    setTitle("PeerPaste");
-	    setLocationRelativeTo(null);
+	    Dimension dim = getScreenSize();
+	    setLocation(dim.width/5, dim.height/5);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    text = new JTextArea(TEXT_ROWS, TEXT_COLUMNS);
 	    text.setEditable(false);
@@ -86,6 +89,11 @@ public class GUI {
 	    getContentPane().add(text);
 	    pack();
 	}
+    }
+
+    private static Dimension getScreenSize() {
+	GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+	return new Dimension(gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight());
     }
 
     private static void startClient() throws Exception {
