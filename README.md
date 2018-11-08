@@ -20,7 +20,7 @@ https://play.google.com/store/apps/details?id=com.cuspycode.android.peerpaste
 
 Works on Android 5.1 and later.
 
-Note: You need to have the app "Barcode Scanner" installed on your Android device. You can find it here if you don't have it installed already:  
+Note: You need to have the app "Barcode Scanner" installed on your Android device. The PeerPaste app will try to install it if you don't have it installed already, otherwise you can find it here:
 https://play.google.com/store/apps/details?id=com.google.zxing.client.android
 
 ## How to install iOS version
