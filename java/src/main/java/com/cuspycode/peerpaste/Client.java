@@ -13,6 +13,8 @@ public class Client {
     final static String SEND_COMMAND = "SEND";
     final static String RECEIVE_COMMAND = "RECEIVE";
 
+    public static int protocolVersion = 1;
+
     public static void main(String[] args) throws Exception {
 	String target = args[0];
 	String command = args[1];
@@ -55,6 +57,7 @@ public class Client {
 	    if (value == '\n') {
 		String greeting = new String(buf, 0, i);
 		GUI.println(greeting);
+		detectProtocolVersion(greeting);
 		break;
 	    }
 	    buf[i] = (byte) value;
@@ -95,6 +98,18 @@ public class Client {
 		GUI.paste(result);
 	    }
 	}
+    }
+
+    private static void detectProtocolVersion(String greeting) {
+	int i = greeting.indexOf(' ');
+	if (i > -1) {
+	    String pv = greeting.substring(0, i);
+	    if (pv.matches("P\\d+")) {
+		protocolVersion = Integer.parseInt(pv.substring(1));
+		return;
+	    }
+	}
+	protocolVersion = 1;
     }
 
 }

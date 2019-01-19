@@ -11,12 +11,15 @@ import java.util.ArrayList;
 import java.util.Base64;			// For debugging
 import javax.crypto.AEADBadTagException;
 
+import static com.cuspycode.peerpaste.GUI.VERSION;
+
 public class Server {
 
     final static String ME_COMMAND = "ME";
     final static String OOB_COMMAND = "OOB";
     final static String SEND_COMMAND = "SEND";
     final static String RECEIVE_COMMAND = "RECEIVE";
+    final static String GREETING_STRING = "P2 JavaSE-PeerPaste v" +VERSION+ "\n";
 
     private static String remoteName = null;				// Kludge
 
@@ -57,7 +60,7 @@ public class Server {
 	    try {
 		Socket socket = server.accept();
 		OutputStream out = socket.getOutputStream();
-		out.write("JavaSE-PeerPaste v0.1\n".getBytes());
+		out.write(GREETING_STRING.getBytes());
 		String peerCommand = readPeerCommand(socket.getInputStream());
 		handleCommand(socket, peerCommand, myData);
 	    } catch (SocketTimeoutException e) {
