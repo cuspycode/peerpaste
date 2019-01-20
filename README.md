@@ -58,7 +58,7 @@ Frequently Asked Questions, preloaded with a few anticipated questions.
 * [[Linux desktop] The clipboard is cleared when the application exits!](#faq1100)
 * [[Linux desktop] Why is the text so fuzzy?](#faq1200)
 * [[Linux headless] What if I'm not running a graphic console?](#faq1300)
-* [[Desktop] What if I want to copy/paste between two desktops or laptops?] (#faq1400)
+* [[Desktop] What if I want to copy/paste between two desktops or laptops?](#faq1400)
 
 <a id="faq0100"></a>
 #### [General] The app is running, but why don't my other devices see it?
