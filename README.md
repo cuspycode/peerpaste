@@ -58,6 +58,7 @@ Frequently Asked Questions, preloaded with a few anticipated questions.
 * [[Linux desktop] The clipboard is cleared when the application exits!](#faq1100)
 * [[Linux desktop] Why is the text so fuzzy?](#faq1200)
 * [[Linux headless] What if I'm not running a graphic console?](#faq1300)
+* [[Desktop] What if I want to copy/paste between two desktops or laptops?] (#faq1400)
 
 <a id="faq0100"></a>
 #### [General] The app is running, but why don't my other devices see it?
@@ -141,3 +142,12 @@ Try them one at a time until you find one that looks good on your desktop screen
 #### [Linux headless] What if I'm not running a graphic console?
 
 The desktop application still works when running in headless mode, but you'll need to add the `--show-data` option to show received data, or the `--paste <TEXT>` option when sending data.
+
+<a id="faq1400"></a>
+#### Desktop] What if I want to copy/paste between two desktops or laptops?
+
+This is possible to accomplish via the current generic desktop/laptop application, but only if you first add an encryption key via manual editing of `~/.local/share/peerpaste/peerpaste-data.json` on both devices. This may possibly be improved in future versions. However, there is a much simpler solution for this case, if you have SSH access from one machine to the other:
+* `ssh $HOSTNAME pbpaste` &mdash; prints the remote MacOS clipboard over an encrypted SSH connection.
+* `ssh $HOSTNAME DISPLAY=:0 xsel` &mdash; prints the remote X11/UNIX clipboard over an encrypted SSH connection.
+
+I don't use Windows, but I'm sure a similar solution exists there, you'll just have to find it on your own.
