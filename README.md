@@ -144,7 +144,7 @@ Try them one at a time until you find one that looks good on your desktop screen
 The desktop application still works when running in headless mode, but you'll need to add the `--show-data` option to show received data, or the `--paste <TEXT>` option when sending data.
 
 <a id="faq1400"></a>
-#### Desktop] What if I want to copy/paste between two desktops or laptops?
+#### [Desktop] What if I want to copy/paste between two desktops or laptops?
 
 This is possible to accomplish via the current generic desktop/laptop application, but only if you first add an encryption key via manual editing of `~/.local/share/peerpaste/peerpaste-data.json` on both devices. This may possibly be improved in future versions. However, there is a much simpler solution for this case, if you have SSH access from one machine to the other:
 * `ssh $HOSTNAME pbpaste` &mdash; prints the remote MacOS clipboard over an encrypted SSH connection.
