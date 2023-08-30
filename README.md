@@ -18,10 +18,7 @@ https://play.google.com/store/apps/details?id=com.cuspycode.android.demo.peerpas
 The unrestricted paid version is available here:  
 https://play.google.com/store/apps/details?id=com.cuspycode.android.peerpaste
 
-Works on Android 5.1 and later.
-
-Note: You need to have the app "Barcode Scanner" installed on your Android device. The PeerPaste app will try to install it if you don't have it installed already, otherwise you can find it here:  
-https://play.google.com/store/apps/details?id=com.google.zxing.client.android
+Version 2.0 should work on Android 7.0 and later, although I have so far only tested it on Android 13.
 
 ## How to install iOS version
 
@@ -29,7 +26,7 @@ The app is not yet available for iOS.
 
 ## How to install generic desktop/laptop version
 
-First you need to have Java SE 8 installed on your machine. Later Java versions will likely work too. Then download `peerpaste.jar` and the shell script `peerpaste`. The shell script is a trivial wrapper that will work on any machine that supports a POSIX shell.
+First you need to have Java SE 8 installed on your machine. Later Java versions will likely work too, although so far I have only tested it on Java 11. Then download `peerpaste.jar` and the shell script `peerpaste`. The shell script is a trivial wrapper that will work on any machine that supports a POSIX shell.
 
 Run the command `./peerpaste` to start the server.
 
@@ -108,9 +105,9 @@ Not yet, but maybe it could happen if there is enough demand to motivate the eff
 <a id="faq0900"></a>
 #### [General] How do I change the service name advertised by mDNS?
 
-On Android the service name is the same as the Bluetooth device name. So to change it, go to the Bluetooth settings and open "Rename this device" where you can choose a new name.
-
 The desktop application uses the hostname by default. But the service name can be changed by providing a command-line argument, e.g. `--name "Steve's Laptop"`.
+
+On Android the service name depends on whether the "Nearby devices" permission has been enabled or not. If enabled, the Bluetooth device name will be used. Otherwise the service name will be a combination of manufacturer and model name, e.g. "Sony XQ-BT52". Note: the "Nearby devices" permission is only used to retrieve the Bluetooth device name. Earlier Android API versions did not require any special permission for this, but for some reason the Android maintainers chose to restrict the feature.
 
 <a id="faq1000"></a>
 #### [General] How do I bind the listening port to a different IP address?
